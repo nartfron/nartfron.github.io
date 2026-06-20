@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nartfron - NYC Lofi 2D Vibes</title>
-    <!-- Iconos de redes sociales -->
+    <!-- Social media icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        /* ESTILO GENERAL */
+        /* GENERAL STYLE */
         body {
             margin: 0;
             padding: 0;
@@ -20,18 +20,18 @@
             align-items: center;
         }
 
-        /* VIDEO DE FONDO */
+        /* BACKGROUND VIDEO */
         #bg-video {
             position: fixed;
             right: 0;
             bottom: 0;
             min-width: 100%;
             min-height: 100%;
-            z-index: -2; /* Por debajo de todo */
+            z-index: -2;
             object-fit: cover;
         }
 
-        /* CAPA OSCURA SEMITRANSPARENTE */
+        /* DARK OVERLAY */
         .overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -39,7 +39,7 @@
             z-index: -1;
         }
 
-        /* CONTENEDOR PRINCIPAL */
+        /* MAIN CONTAINER */
         .container {
             position: relative;
             width: 90%;
@@ -49,7 +49,7 @@
             z-index: 1;
         }
 
-        /* FOTO DE PERFIL */
+        /* PROFILE PICTURE */
         .profile-img {
             width: 120px;
             height: 120px;
@@ -73,7 +73,7 @@
             margin-bottom: 25px;
         }
 
-        /* BOTONES */
+        /* BUTTONS */
         .btn {
             display: flex;
             align-items: center;
@@ -105,7 +105,7 @@
         .btn-tiktok i { color: #EE1D52; }
         .btn-music i { color: #1DB954; }
 
-        /* FORMULARIO */
+        /* FORM SECTION */
         .music-section {
             margin-top: 30px;
             padding-top: 20px;
@@ -169,22 +169,22 @@
 </head>
 <body>
 
-    <!-- VIDEO DE FONDO -->
+    <!-- BACKGROUND VIDEO -->
     <video autoplay loop muted playsinline id="bg-video">
         <source src="https://i.imgur.com/wXO5H6n.mp4" type="video/mp4">
     </video>
 
-    <!-- CAPA OSCURA -->
+    <!-- DARK OVERLAY -->
     <div class="overlay"></div>
 
     <div class="container">
-        <!-- FOTO DE PERFIL -->
+        <!-- PROFILE PICTURE -->
         <img src="https://i.imgur.com/IYSD1gs.jpeg" alt="Nartfron Profile" class="profile-img">
 
         <h1>Nartfron</h1>
         <p class="subtitle">2D Lofi NYC Aesthetic • Chill Vibes Only</p>
 
-        <!-- BOTONES DE REDES -->
+        <!-- SOCIAL MEDIA BUTTONS -->
         <a href="https://www.instagram.com/nartfron/" target="_blank" class="btn btn-instagram">
             <i class="fab fa-instagram"></i> Instagram
         </a>
@@ -194,23 +194,21 @@
         </a>
 
         <a href="https://open.spotify.com/playlist/3G40MY61eZ8fhPr1iAw5dC?si=dc911299fa47429d" target="_blank" class="btn btn-music">
-            <i class="fab fa-spotify"></i> Mi Música
+            <i class="fab fa-spotify"></i> My Music
         </a>
 
-        <!-- SECCIÓN PARA ENVÍO DE MÚSICA -->
+        <!-- MUSIC SUBMISSION SECTION -->
         <div class="music-section">
-            <h3><i class="fas fa-headphones"></i> ¿Tienes música para mis videos?</h3>
-            <p style="font-size: 13px; color: #ccc; margin-bottom: 15px;">Envíame tu pista o sugerencia y la escucharé</p>
+            <h3><i class="fas fa-headphones"></i> Got music for my videos?</h3>
+            <p style="font-size: 13px; color: #ccc; margin-bottom: 15px;">Send me your track or suggestion and I'll listen.</p>
             
-            <!-- FORMULARIO ACTUALIZADO CON TU URL Y TU CORREO -->
             <form action="https://formspree.io/f/xjgdnzba" method="POST">
-                <!-- Campo oculto para que el correo llegue a nartcontactme@gmail.com -->
                 <input type="hidden" name="_email" value="nartcontactme@gmail.com">
                 
-                <input type="text" name="name" placeholder="Tu nombre o IG" required>
-                <input type="url" name="music_link" placeholder="Enlace a tu música (Spotify/SoundCloud)" required>
-                <textarea name="message" placeholder="¿Por qué crees que encaja con mi estilo?"></textarea>
-                <button type="submit" class="submit-btn">Enviar Pista</button>
+                <input type="text" name="name" placeholder="Your name or IG" required>
+                <input type="url" name="music_link" placeholder="Link to your music (Spotify/SoundCloud)" required>
+                <textarea name="message" placeholder="Why do you think it fits my vibe?"></textarea>
+                <button type="submit" class="submit-btn">Submit Track</button>
             </form>
         </div>
 
