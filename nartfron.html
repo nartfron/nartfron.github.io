@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nartfron - NYC Lofi 2D Vibes</title>
+    <!-- Iconos de redes sociales -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* ESTILO GENERAL */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #fff;
+            background-color: #1a0b1e;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* VIDEO DE FONDO */
+        #bg-video {
+            position: fixed;
+            right: 0;
+            bottom: 0;
+            min-width: 100%;
+            min-height: 100%;
+            z-index: -2; /* Por debajo de todo */
+            object-fit: cover;
+        }
+
+        /* CAPA OSCURA SEMITRANSPARENTE */
+        .overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(26, 11, 30, 0.75);
+            z-index: -1;
+        }
+
+        /* CONTENEDOR PRINCIPAL */
+        .container {
+            position: relative;
+            width: 90%;
+            max-width: 450px;
+            text-align: center;
+            padding: 20px;
+            z-index: 1;
+        }
+
+        /* FOTO DE PERFIL */
+        .profile-img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 3px solid #ff69b4;
+            object-fit: cover;
+            margin-bottom: 15px;
+            box-shadow: 0 0 20px rgba(255, 105, 180, 0.4);
+        }
+
+        h1 {
+            font-size: 24px;
+            margin: 5px 0;
+            color: #fff;
+            text-shadow: 0 0 10px rgba(255, 105, 180, 0.5);
+        }
+
+        p.subtitle {
+            font-size: 14px;
+            color: #d1d1d1;
+            margin-bottom: 25px;
+        }
+
+        /* BOTONES */
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 105, 180, 0.3);
+            color: #fff;
+            text-decoration: none;
+            padding: 16px 20px;
+            margin-bottom: 15px;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .btn:hover {
+            background: rgba(255, 105, 180, 0.25);
+            border-color: #ff69b4;
+            transform: scale(1.02);
+            box-shadow: 0 0 20px rgba(255, 105, 180, 0.2);
+        }
+
+        .btn i { font-size: 22px; }
+
+        .btn-instagram i { color: #E1306C; }
+        .btn-tiktok i { color: #EE1D52; }
+        .btn-music i { color: #1DB954; }
+
+        /* FORMULARIO */
+        .music-section {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .music-section h3 {
+            font-size: 16px;
+            margin-bottom: 15px;
+            color: #ff69b4;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            border-radius: 25px;
+            border: 1px solid #444;
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            font-family: inherit;
+            box-sizing: border-box;
+            transition: border 0.3s;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #ff69b4;
+        }
+
+        textarea { resize: vertical; height: 80px; }
+
+        .submit-btn {
+            background: #ff69b4;
+            color: #1a0b1e;
+            border: none;
+            padding: 12px;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 16px;
+        }
+
+        .submit-btn:hover {
+            background: #ff3b8a;
+            transform: scale(1.02);
+        }
+
+        footer {
+            margin-top: 30px;
+            font-size: 12px;
+            color: #aaa;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- VIDEO DE FONDO -->
+    <video autoplay loop muted playsinline id="bg-video">
+        <source src="https://i.imgur.com/wXO5H6n.mp4" type="video/mp4">
+    </video>
+
+    <!-- CAPA OSCURA -->
+    <div class="overlay"></div>
+
+    <div class="container">
+        <!-- FOTO DE PERFIL -->
+        <img src="https://i.imgur.com/IYSD1gs.jpeg" alt="Nartfron Profile" class="profile-img">
+
+        <h1>Nartfron</h1>
+        <p class="subtitle">2D Lofi NYC Aesthetic • Chill Vibes Only</p>
+
+        <!-- BOTONES DE REDES -->
+        <a href="https://www.instagram.com/nartfron/" target="_blank" class="btn btn-instagram">
+            <i class="fab fa-instagram"></i> Instagram
+        </a>
+
+        <a href="https://www.tiktok.com/@nartfron" target="_blank" class="btn btn-tiktok">
+            <i class="fab fa-tiktok"></i> TikTok
+        </a>
+
+        <a href="https://open.spotify.com/playlist/3G40MY61eZ8fhPr1iAw5dC?si=dc911299fa47429d" target="_blank" class="btn btn-music">
+            <i class="fab fa-spotify"></i> Mi Música
+        </a>
+
+        <!-- SECCIÓN PARA ENVÍO DE MÚSICA -->
+        <div class="music-section">
+            <h3><i class="fas fa-headphones"></i> ¿Tienes música para mis videos?</h3>
+            <p style="font-size: 13px; color: #ccc; margin-bottom: 15px;">Envíame tu pista o sugerencia y la escucharé</p>
+            
+            <!-- FORMULARIO ACTUALIZADO CON TU URL Y TU CORREO -->
+            <form action="https://formspree.io/f/xjgdnzba" method="POST">
+                <!-- Campo oculto para que el correo llegue a nartcontactme@gmail.com -->
+                <input type="hidden" name="_email" value="nartcontactme@gmail.com">
+                
+                <input type="text" name="name" placeholder="Tu nombre o IG" required>
+                <input type="url" name="music_link" placeholder="Enlace a tu música (Spotify/SoundCloud)" required>
+                <textarea name="message" placeholder="¿Por qué crees que encaja con mi estilo?"></textarea>
+                <button type="submit" class="submit-btn">Enviar Pista</button>
+            </form>
+        </div>
+
+        <footer>© 2026 Nartfron • NYC Lofi Art</footer>
+    </div>
+</body>
+</html>
