@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nartfron | Custom 2D Lofi Scene</title>
+    <title>Nartfron | 2D Lofi Aesthetics</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         /* ESTILO GENERAL - FONDO BLANCO CON IMAGEN DE FONDO */
@@ -86,58 +86,35 @@
             text-align: left;
         }
 
-        /* BOTÓN DE COMPRA - ANCHO COMPLETO */
-        .btn-buy {
-            display: block;
-            width: 100%;
-            background: #ff69b4;
-            color: #000000;
-            text-decoration: none;
-            border: none;
-            padding: 16px 0;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            border-radius: 0px;
-            transition: all 0.2s ease;
-            margin-bottom: 25px;
-        }
-
-        .btn-buy:hover {
-            background: #ff3b8a;
-        }
-
-        /* ENLACES SOCIALES */
-        .social-links {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            border-top: 1px solid #e5e5e5;
-            padding-top: 20px;
-        }
-
+        /* BOTONES UNIFORMES - ESTILO LIMPIO */
         .btn-social {
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
-            padding: 12px 0;
+            padding: 14px 0;
             text-decoration: none;
             color: #000000;
             font-size: 15px;
             border: 1px solid #e5e5e5;
             border-radius: 0px;
             transition: all 0.2s ease;
+            width: 100%;
         }
 
         .btn-social:hover {
             background: #f5f5f5;
+            border-color: #ff69b4;
         }
 
         .btn-social i { font-size: 18px; }
 
+        /* COLORES DE ICONOS */
         .btn-spotify i { color: #1DB954; }
         .btn-instagram i { color: #E1306C; }
+        .btn-youtube i { color: #FF0000; }
+        .btn-custom i { color: #ff69b4; }
+        .btn-email i { color: #333333; }
 
         footer {
             margin-top: 20px;
@@ -163,16 +140,31 @@
             Personalized 9:16 2D Lofi scene, NYC or Rio style.
         </p>
 
-        <!-- BOTÓN DE COMPRA (I WANT THIS!) - ANCHO COMPLETO -->
-        <a href="https://nartistry.gumroad.com/l/nartfron" target="_blank" class="btn-buy">I want this!</a>
-
-        <!-- ENLACES SOCIALES -->
+        <!-- BOTONES SOCIALES Y DE ACCIÓN (TODOS UNIFORMES) -->
         <div class="social-links">
+            <!-- Botón de YouTube (ACTUALIZADO CON TU LINK) -->
+            <a href="https://www.youtube.com/@Nartfron" target="_blank" class="btn-social btn-youtube">
+                <i class="fab fa-youtube"></i> YouTube
+            </a>
+
+            <!-- Botón de Spotify -->
             <a href="https://open.spotify.com/playlist/3G40MY61eZ8fhPr1iAw5dC?si=581c2a4842b64d7f" target="_blank" class="btn-social btn-spotify">
                 <i class="fab fa-spotify"></i> Listen to the Playlist
             </a>
+
+            <!-- Botón de Instagram -->
             <a href="https://www.instagram.com/nartfron/" target="_blank" class="btn-social btn-instagram">
                 <i class="fab fa-instagram"></i> See the Portfolio
+            </a>
+
+            <!-- Botón de "Your Custom Scene" (Redirige a Gumroad) -->
+            <a href="https://nartistry.gumroad.com/l/nartfron" target="_blank" class="btn-social btn-custom">
+                <i class="fas fa-palette"></i> Your Custom Scene
+            </a>
+
+            <!-- Botón de Colaboración / Emprendedores (Abre el correo) -->
+            <a href="mailto:nartcontactme@gmail.com" class="btn-social btn-email">
+                <i class="fas fa-envelope"></i> Entrepreneurs & Collab
             </a>
         </div>
 
