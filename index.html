@@ -45,7 +45,7 @@
             border-radius: 0px;
         }
 
-        /* TEXTO DE MARCA (Reemplaza al cuadrado de perfil) */
+        /* TEXTO DE MARCA */
         .brand-title {
             font-size: 28px;
             font-weight: 700;
@@ -55,7 +55,7 @@
         }
         .brand-subtitle {
             font-size: 14px;
-            color: #ff69b4; /* Rosa neón */
+            color: #ff69b4;
             font-weight: 500;
             letter-spacing: 2px;
             text-transform: uppercase;
@@ -86,41 +86,21 @@
             text-align: left;
         }
 
-        /* FILA DE PRECIO Y BOTÓN DE COMPRA */
-        .price-buy-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: stretch;
-            margin-bottom: 25px;
-            gap: 10px;
-        }
-
-        .price-tag {
-            background: transparent;
-            color: #ff69b4;
-            border: 1px solid #ff69b4;
-            padding: 14px 20px;
-            font-size: 22px;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            border-radius: 0px;
-        }
-
+        /* BOTÓN DE COMPRA - ANCHO COMPLETO */
         .btn-buy {
-            flex: 1;
+            display: block;
+            width: 100%;
             background: #ff69b4;
             color: #000000;
             text-decoration: none;
             border: none;
+            padding: 16px 0;
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             border-radius: 0px;
             transition: all 0.2s ease;
+            margin-bottom: 25px;
         }
 
         .btn-buy:hover {
@@ -170,7 +150,7 @@
 
     <div class="container">
         
-        <!-- EL CUADRADO DE ARRIBA SE REEMPLAZÓ POR ESTE TEXTO LIMPIO -->
+        <!-- TEXTO DE MARCA -->
         <h1 class="brand-title">Nartfron</h1>
         <p class="brand-subtitle">2D Lofi Aesthetics</p>
 
@@ -183,13 +163,10 @@
             Personalized 9:16 2D Lofi scene, NYC or Rio style. Delivered in 24–48 hours.
         </p>
 
-        <!-- FILA DE PRECIO + BOTÓN DE COMPRA -->
-        <div class="price-buy-row">
-            <div class="price-tag">$5</div>
-            <a href="https://nartistry.gumroad.com/l/nartfron" target="_blank" class="btn-buy">I want this!</a>
-        </div>
+        <!-- BOTÓN DE COMPRA (I WANT THIS!) - ANCHO COMPLETO -->
+        <a href="https://nartistry.gumroad.com/l/nartfron" target="_blank" class="btn-buy">I want this!</a>
 
-        <!-- ENLACES SOCIALES CON EL NUEVO LINK DE SPOTIFY -->
+        <!-- ENLACES SOCIALES -->
         <div class="social-links">
             <a href="https://open.spotify.com/playlist/3G40MY61eZ8fhPr1iAw5dC?si=581c2a4842b64d7f" target="_blank" class="btn-social btn-spotify">
                 <i class="fab fa-spotify"></i> Listen to the Playlist
