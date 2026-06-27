@@ -91,12 +91,12 @@
         }
         .vid-card img { width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
 
-        /* --- SISTEMA DE VOTACIÓN (CORREGIDO) --- */
+        /* --- SISTEMA DE VOTACIÓN --- */
         .vote-container { max-width: 600px; margin: 0 auto; }
         .vote-item {
             display: flex; align-items: center; gap: 1.5rem; margin-bottom: 2rem;
             cursor: pointer; padding: 0.5rem 0; transition: opacity 0.2s;
-            touch-action: manipulation; /* Elimina el retraso de 300ms en móviles */
+            touch-action: manipulation;
         }
         .vote-item:active { opacity: 0.5; }
         .vote-city { font-weight: 600; min-width: 100px; text-transform: uppercase; font-size: 1.1rem; letter-spacing: 0.02em; }
@@ -193,7 +193,7 @@
             </a>
         </section>
 
-        <!-- APARTADO DE VOTACIÓN (CORREGIDO) -->
+        <!-- APARTADO DE VOTACIÓN -->
         <section id="vote">
             <p class="eyebrow">04 — Vote</p>
             <h2>Next Vibe City</h2>
@@ -224,7 +224,7 @@
         <a href="https://www.instagram.com/nartfron/" target="_blank" style="color:#888; text-decoration:none;">Instagram @nartfron</a>
     </footer>
 
-    <!-- SCRIPT (Corregido para móvil) -->
+    <!-- SCRIPT (VOTACIÓN CORREGIDA CON DELEGACIÓN DE EVENTOS) -->
     <script>
         // --- MENÚ HAMBURGUESA Y SCROLL REVEAL ---
         const btn = document.getElementById('ham-btn');
@@ -253,17 +253,15 @@
         // --- CARRUSEL DE IMÁGENES ---
         const track = document.getElementById('vid-track');
         let isDown = false, startX, scrollLeft;
-        // Ratón
         track.addEventListener('mousedown', (e) => { isDown = true; startX = e.pageX - track.offsetLeft; scrollLeft = track.scrollLeft; track.style.cursor = 'grabbing'; });
         track.addEventListener('mouseleave', () => { isDown = false; track.style.cursor = 'grab'; });
         track.addEventListener('mouseup', () => { isDown = false; track.style.cursor = 'grab'; });
         track.addEventListener('mousemove', (e) => { if(!isDown) return; e.preventDefault(); const x = e.pageX - track.offsetLeft; const walk = (x - startX) * 2; track.scrollLeft = scrollLeft - walk; });
-        // Táctil
         track.addEventListener('touchstart', (e) => { isDown = true; startX = e.touches[0].pageX - track.offsetLeft; scrollLeft = track.scrollLeft; });
         track.addEventListener('touchend', () => { isDown = false; });
         track.addEventListener('touchmove', (e) => { if(!isDown) return; const x = e.touches[0].pageX - track.offsetLeft; const walk = (x - startX) * 2; track.scrollLeft = scrollLeft - walk; });
 
-        // --- SISTEMA DE VOTACIÓN (INFALIBLE EN CELULAR) ---
+        // --- SISTEMA DE VOTACIÓN (Delegación de Eventos - INFALIBLE) ---
         const cities = ["Miami", "Detroit", "London", "Paris", "Chicago", "Nairobi"];
         let votes = JSON.parse(localStorage.getItem('nartfron_votes')) || {};
         let hasVoted = localStorage.getItem('nartfron_hasVoted') === 'true';
@@ -281,7 +279,7 @@
                 const count = votes[city] || 0;
                 const barWidth = maxCount === 0 ? 0 : (count / maxCount) * 100;
                 html += `
-                    <div class="vote-item" data-city="${city}" style="${hasVoted ? 'cursor:default;' : ''}">
+                    <div class="vote-item" data-city="${city}" style="${hasVoted ? 'cursor:default;' : 'cursor:pointer;'}">
                         <span class="vote-city">${city}</span>
                         <div class="vote-bar-bg">
                             <div class="vote-bar-fill" style="width: ${barWidth}%;"></div>
@@ -292,38 +290,39 @@
             });
             container.innerHTML = html;
 
-            // Si no ha votado, añadir evento CLICK (funciona en celular sin conflicto)
-            if (!hasVoted) {
-                document.querySelectorAll('.vote-item').forEach(el => {
-                    el.addEventListener('click', function() {
-                        const city = this.dataset.city;
-                        // Segunda barrera de seguridad contra doble click
-                        if (!hasVoted) {
-                            castVote(city);
-                        }
-                    });
-                });
-            } else {
+            if (hasVoted) {
                 document.getElementById('voteMessage').innerHTML = "You've already cast your vote. Thanks for shaping the next vibe!";
+            } else {
+                document.getElementById('voteMessage').innerHTML = "";
             }
         }
 
-        function castVote(city) {
+        // La clave: el evento click está puesto en el padre (voteContainer), NO en los hijos.
+        // Así, aunque el HTML de los hijos se borre y se regenere, el evento sigue funcionando.
+        document.getElementById('voteContainer').addEventListener('click', function(e) {
+            // Si ya votó, no hacemos nada
             if (hasVoted) return;
-            
-            // Sumar el voto
+
+            // Buscamos si tocó un elemento con la clase 'vote-item' o alguno de sus hijos
+            const item = e.target.closest('.vote-item');
+            if (!item) return;
+
+            const city = item.dataset.city;
+            if (!city) return;
+
+            // Sumamos el voto en el navegador y lo guardamos
             votes[city] = (votes[city] || 0) + 1;
             localStorage.setItem('nartfron_votes', JSON.stringify(votes));
             localStorage.setItem('nartfron_hasVoted', 'true');
             hasVoted = true;
-            
-            const msg = document.getElementById('voteMessage');
-            msg.innerHTML = `You voted for <strong style="color:var(--neon);">${city}</strong>. The next vibe is loading...`;
-            
-            // Re-renderizar para actualizar la gráfica y el número de votos
-            renderVotes();
-        }
 
+            document.getElementById('voteMessage').innerHTML = `You voted for <strong style="color:var(--neon);">${city}</strong>. The next vibe is loading...`;
+
+            // Renderizamos de nuevo para que la barra y el número se actualicen al instante
+            renderVotes();
+        });
+
+        // Renderizar estado inicial
         renderVotes();
     </script>
 </body>
