@@ -153,16 +153,17 @@
             </div>
         </section>
 
-        <!-- IMAGES (Loops) -->
+        <!-- IMAGES (Loops) - CORREGIDO CON RUTAS LOCALES PARA MÓVILES -->
         <section id="images">
             <p class="eyebrow">02 — Images</p>
             <h2>Loops</h2>
             <div class="vid-track-wrap">
                 <div class="vid-track" id="vid-track">
-                    <div class="vid-card"><video src="https://i.imgur.com/w5U0gJX.mp4" muted loop></video></div>
-                    <div class="vid-card"><video src="https://i.imgur.com/YTgmItV.mp4" muted loop></video></div>
-                    <div class="vid-card"><video src="https://i.imgur.com/RB79JNW.mp4" muted loop></video></div>
-                    <div class="vid-card"><video src="https://i.imgur.com/PJhazzZ.mp4" muted loop></video></div>
+                    <!-- CAMBIO IMPORTANTE: Reemplazamos las URL de Imgur por archivos locales de tu GitHub -->
+                    <div class="vid-card"><video src="videos/loop1.mp4" muted loop playsinline webkit-playsinline preload="metadata"></video></div>
+                    <div class="vid-card"><video src="videos/loop2.mp4" muted loop playsinline webkit-playsinline preload="metadata"></video></div>
+                    <div class="vid-card"><video src="videos/loop3.mp4" muted loop playsinline webkit-playsinline preload="metadata"></video></div>
+                    <div class="vid-card"><video src="videos/loop4.mp4" muted loop playsinline webkit-playsinline preload="metadata"></video></div>
                 </div>
             </div>
         </section>
@@ -184,7 +185,7 @@
             </a>
         </section>
 
-        <!-- NUEVO APARTADO DE VOTACIÓN -->
+        <!-- APARTADO DE VOTACIÓN -->
         <section id="vote">
             <p class="eyebrow">04 — Vote</p>
             <h2>Next Vibe City</h2>
@@ -251,7 +252,7 @@
         track.addEventListener('mouseup', () => { isDown = false; });
         track.addEventListener('mousemove', (e) => { if(!isDown) return; e.preventDefault(); const x = e.pageX - track.offsetLeft; const walk = (x - startX) * 2; track.scrollLeft = scrollLeft - walk; });
 
-        // --- SISTEMA DE VOTACIÓN ---
+        // --- SISTEMA DE VOTACIÓN (PORCENTAJE REAL SOBRE EL TOTAL) ---
         const cities = ["Miami", "Detroit", "London", "Paris", "Chicago", "Nairobi"];
         let votes = JSON.parse(localStorage.getItem('nartfron_votes')) || {};
         let hasVoted = localStorage.getItem('nartfron_hasVoted') === 'true';
@@ -263,11 +264,13 @@
 
         function renderVotes() {
             const container = document.getElementById('voteContainer');
+            // Sacamos el total de todos los votos emitidos
             const total = Object.values(votes).reduce((a, b) => a + b, 0);
             
             let html = '';
             cities.forEach(city => {
                 const count = votes[city] || 0;
+                // Calculamos el porcentaje basado en el total. Si total es 0, el porcentaje es 0.
                 const pct = total === 0 ? 0 : Math.round((count / total) * 100);
                 html += `
                     <div class="vote-item" data-city="${city}" style="${hasVoted ? 'cursor:default;' : ''}">
@@ -305,7 +308,7 @@
             const msg = document.getElementById('voteMessage');
             msg.innerHTML = `You voted for <strong style="color:var(--neon);">${city}</strong>. The next vibe is loading...`;
             
-            renderVotes();
+            renderVotes(); // Renderiza de nuevo, actualizando los porcentajes en tiempo real
         }
 
         // Renderizar al cargar la página
