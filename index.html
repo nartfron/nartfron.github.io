@@ -119,16 +119,10 @@
     </style>
 </head>
 <body>
-
-    <!-- HEADER -->
     <header>
         <a href="#" class="logo">Nartfron<span>.</span></a>
-        <button id="ham-btn" aria-label="Menu">
-            <span></span><span></span><span></span>
-        </button>
+        <button id="ham-btn" aria-label="Menu"><span></span><span></span><span></span></button>
     </header>
-
-    <!-- MENU DRAWER -->
     <div id="nav-drawer">
         <nav>
             <a href="#statement">Statement</a>
@@ -138,31 +132,19 @@
             <a href="#inquiries">Inquiries</a>
         </nav>
     </div>
-
     <main>
-        <!-- HERO -->
         <section id="hero" class="visible" style="border-top: none; padding-top: 0;">
             <h1 style="font-size: clamp(4rem, 10vw, 8rem); font-weight: 700; letter-spacing: -0.04em; line-height: 0.85; margin-bottom: 1rem;">NYC 2D<br>Lofi Aesthetics.</h1>
-            <p style="font-size: 1.2rem; color: #555; max-width: 600px;">
-                Love is not noise. It is the caress of rain on glass, the neon light embracing Black skin, and the sacred right to exist in calm.
-            </p>
+            <p style="font-size: 1.2rem; color: #555; max-width: 600px;">Love is not noise. It is the caress of rain on glass, the neon light embracing Black skin, and the sacred right to exist in calm.</p>
         </section>
-
-        <!-- STATEMENT -->
         <section id="statement">
             <p class="eyebrow">01 — Manifiesto</p>
             <h2>Statement</h2>
-            <p class="lead">
-                Love, in its most radical form, is not shouted. It is held. This space is an altar dedicated to Black intimacy: to care, to rest, and to the beauty of existing without haste.
-            </p>
+            <p class="lead">Love, in its most radical form, is not shouted. It is held. This space is an altar dedicated to Black intimacy: to care, to rest, and to the beauty of existing without haste.</p>
             <div style="max-width: 700px; font-size: 1.1rem; line-height: 2; color: #333;">
-                <p>
-                    Our bodies have been designed for struggle, but they deserve rest. Like the rain that washes the city, like the neon that tints the night in pink and purple, love flourishes in stillness. Nartfron is a testament that Black culture is not only movement, but also pause, tenderness, and a home built in the memory of affection. Here, we romanticize unhurried love, the connection that needs no words, and the aesthetic of a life chosen to be lived with an awake soul.
-                </p>
+                <p>Our bodies have been designed for struggle, but they deserve rest. Like the rain that washes the city, like the neon that tints the night in pink and purple, love flourishes in stillness. Nartfron is a testament that Black culture is not only movement, but also pause, tenderness, and a home built in the memory of affection. Here, we romanticize unhurried love, the connection that needs no words, and the aesthetic of a life chosen to be lived with an awake soul.</p>
             </div>
         </section>
-
-        <!-- IMAGES -->
         <section id="images">
             <p class="eyebrow">02 — Images</p>
             <h2>Loops</h2>
@@ -175,37 +157,22 @@
                 </div>
             </div>
         </section>
-
-        <!-- SOUNDS & VISUALS -->
         <section id="connect">
             <p class="eyebrow">03 — Sounds & Visuals</p>
             <h2>Connect</h2>
-            <p class="lead" style="font-size: 1.2rem; font-weight: 400;">
-                A soundtrack for love and memory. Slow rhythms and atmospheres that wrap around the Black soul.
-            </p>
-            
+            <p class="lead" style="font-size: 1.2rem; font-weight: 400;">A soundtrack for love and memory. Slow rhythms and atmospheres that wrap around the Black soul.</p>
             <div style="max-width: 500px; margin-bottom: 2.5rem;">
                 <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/3G40MY61eZ8fhPr1iAw5dC?utm_source=generator" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
             </div>
-
-            <a href="https://www.youtube.com/@Nartfron" target="_blank" class="btn" style="background: var(--txt); color: var(--bg);">
-                <i class="fab fa-youtube" style="margin-right: 10px;"></i> Visit YouTube Channel
-            </a>
+            <a href="https://www.youtube.com/@Nartfron" target="_blank" class="btn" style="background: var(--txt); color: var(--bg);"><i class="fab fa-youtube" style="margin-right: 10px;"></i> Visit YouTube Channel</a>
         </section>
-
-        <!-- APARTADO DE VOTACIÓN -->
         <section id="vote">
             <p class="eyebrow">04 — Vote</p>
             <h2>Next Vibe City</h2>
-            <p class="lead" style="font-size: 1.2rem; font-weight: 400;">
-                Where should the neon rain fall next? Select a city to cast your voice.
-            </p>
-
+            <p class="lead" style="font-size: 1.2rem; font-weight: 400;">Where should the neon rain fall next? Select a city to cast your voice.</p>
             <div class="vote-container" id="voteContainer"></div>
             <div class="vote-message" id="voteMessage"></div>
         </section>
-
-        <!-- INQUIRIES -->
         <section id="inquiries">
             <p class="eyebrow">05 — Contact</p>
             <h2>Inquiries</h2>
@@ -218,36 +185,33 @@
             </form>
         </section>
     </main>
-
     <footer>
         <p>© 2026 Nartfron · NYC 2D Lofi</p>
         <a href="https://www.instagram.com/nartfron/" target="_blank" style="color:#888; text-decoration:none;">Instagram @nartfron</a>
     </footer>
 
-    <!-- SCRIPT (VOTACIÓN CORREGIDA CON DELEGACIÓN DE EVENTOS) -->
+    <!-- 1. LIBRERÍAS DE FIREBASE -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+
     <script>
         // --- MENÚ HAMBURGUESA Y SCROLL REVEAL ---
         const btn = document.getElementById('ham-btn');
         const drawer = document.getElementById('nav-drawer');
         btn.addEventListener('click', () => {
-            drawer.classList.toggle('open');
-            btn.classList.toggle('open');
+            drawer.classList.toggle('open'); btn.classList.toggle('open');
             document.body.style.overflow = drawer.classList.contains('open') ? 'hidden' : '';
         });
         document.querySelectorAll('#nav-drawer a').forEach(link => {
             link.addEventListener('click', (e) => {
                 e.preventDefault();
                 const target = document.querySelector(link.getAttribute('href'));
-                drawer.classList.remove('open');
-                btn.classList.remove('open');
+                drawer.classList.remove('open'); btn.classList.remove('open');
                 document.body.style.overflow = '';
                 if(target) target.scrollIntoView({behavior:'smooth'});
             });
         });
-
-        const observer = new IntersectionObserver(entries => {
-            entries.forEach(entry => { if(entry.isIntersecting) entry.target.classList.add('visible'); });
-        }, { threshold: 0.1 });
+        const observer = new IntersectionObserver(entries => { entries.forEach(entry => { if(entry.isIntersecting) entry.target.classList.add('visible'); }); }, { threshold: 0.1 });
         document.querySelectorAll('section:not(#hero)').forEach(s => observer.observe(s));
 
         // --- CARRUSEL DE IMÁGENES ---
@@ -261,22 +225,41 @@
         track.addEventListener('touchend', () => { isDown = false; });
         track.addEventListener('touchmove', (e) => { if(!isDown) return; const x = e.touches[0].pageX - track.offsetLeft; const walk = (x - startX) * 2; track.scrollLeft = scrollLeft - walk; });
 
-        // --- SISTEMA DE VOTACIÓN (Delegación de Eventos - INFALIBLE) ---
+
+        // --- CONFIGURACIÓN DE FIREBASE (Tus claves insertadas) ---
+        const firebaseConfig = {
+            apiKey: "AIzaSyAjFvP7CV1GbhJzM_ykh52iHmRZhhF94oc",
+            authDomain: "nartfron-b1364.firebaseapp.com",
+            databaseURL: "https://nartfron-b1364-default-rtdb.firebaseio.com",
+            projectId: "nartfron-b1364",
+            storageBucket: "nartfron-b1364.firebasestorage.app",
+            messagingSenderId: "102384454",
+            appId: "1:102384454:web:3a98d0714f3c7a94731b47",
+            measurementId: "G-0XZEEQT77B"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        // --- VARIABLES DE VOTACIÓN ---
         const cities = ["Miami", "Detroit", "London", "Paris", "Chicago", "Nairobi"];
-        let votes = JSON.parse(localStorage.getItem('nartfron_votes')) || {};
-        let hasVoted = localStorage.getItem('nartfron_hasVoted') === 'true';
+        let hasVoted = false; // Por sesión, permite volver a votar si recargas la página
 
-        // Inicializar votos
-        cities.forEach(c => { if (!(c in votes)) votes[c] = 0; });
+        // --- LEER VOTOS EN TIEMPO REAL ---
+        const votesRef = db.ref('votes');
+        votesRef.on('value', (snapshot) => {
+            const data = snapshot.val() || {};
+            renderVotes(data);
+        });
 
-        function renderVotes() {
+        // --- RENDERIZAR GRÁFICA ---
+        function renderVotes(data) {
             const container = document.getElementById('voteContainer');
-            const values = Object.values(votes);
-            const maxCount = values.length > 0 ? Math.max(...values) : 0;
+            const values = cities.map(c => data[c] || 0);
+            const maxCount = Math.max(...values, 0);
             
             let html = '';
             cities.forEach(city => {
-                const count = votes[city] || 0;
+                const count = data[city] || 0;
                 const barWidth = maxCount === 0 ? 0 : (count / maxCount) * 100;
                 html += `
                     <div class="vote-item" data-city="${city}" style="${hasVoted ? 'cursor:default;' : 'cursor:pointer;'}">
@@ -289,41 +272,26 @@
                 `;
             });
             container.innerHTML = html;
-
-            if (hasVoted) {
-                document.getElementById('voteMessage').innerHTML = "You've already cast your vote. Thanks for shaping the next vibe!";
-            } else {
-                document.getElementById('voteMessage').innerHTML = "";
-            }
         }
 
-        // La clave: el evento click está puesto en el padre (voteContainer), NO en los hijos.
-        // Así, aunque el HTML de los hijos se borre y se regenere, el evento sigue funcionando.
+        // --- ACCIÓN DE VOTAR ---
         document.getElementById('voteContainer').addEventListener('click', function(e) {
-            // Si ya votó, no hacemos nada
             if (hasVoted) return;
-
-            // Buscamos si tocó un elemento con la clase 'vote-item' o alguno de sus hijos
             const item = e.target.closest('.vote-item');
             if (!item) return;
-
             const city = item.dataset.city;
-            if (!city) return;
 
-            // Sumamos el voto en el navegador y lo guardamos
-            votes[city] = (votes[city] || 0) + 1;
-            localStorage.setItem('nartfron_votes', JSON.stringify(votes));
-            localStorage.setItem('nartfron_hasVoted', 'true');
+            // Guardar el voto en la base de datos global
+            const votesRef = db.ref('votes');
+            votesRef.transaction((currentData) => {
+                if (currentData === null) currentData = {};
+                currentData[city] = (currentData[city] || 0) + 1;
+                return currentData;
+            });
+
             hasVoted = true;
-
-            document.getElementById('voteMessage').innerHTML = `You voted for <strong style="color:var(--neon);">${city}</strong>. The next vibe is loading...`;
-
-            // Renderizamos de nuevo para que la barra y el número se actualicen al instante
-            renderVotes();
+            document.getElementById('voteMessage').innerHTML = `You voted for <strong style="color:var(--neon);">${city}</strong>. The next vibe is updating for everyone!`;
         });
-
-        // Renderizar estado inicial
-        renderVotes();
     </script>
 </body>
 </html>
