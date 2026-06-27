@@ -70,11 +70,11 @@
         h2 { font-size: clamp(3rem, 6vw, 5rem); font-weight: 700; letter-spacing: -0.03em; line-height: 0.9; margin-bottom: 2rem; }
         .lead { font-size: 1.5rem; font-weight: 400; color: #333; max-width: 700px; margin-bottom: 3rem; }
 
-        /* --- CARRUSEL DE VIDEOS (Loops) --- */
+        /* --- CARRUSEL DE IMÁGENES --- */
         .vid-track-wrap { width: 100%; overflow: hidden; }
         .vid-track { display: flex; gap: 1.5rem; padding: 0; will-change: transform; cursor: grab; user-select: none; }
         .vid-card { flex-shrink: 0; width: 220px; aspect-ratio: 9/16; background: #f0f0f0; border: 1px solid var(--gl); }
-        .vid-card video { width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
+        .vid-card img { width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
 
         /* --- SISTEMA DE VOTACIÓN --- */
         .vote-container { max-width: 600px; margin: 0 auto; }
@@ -86,14 +86,7 @@
         .vote-city { font-weight: 600; min-width: 100px; text-transform: uppercase; font-size: 1.1rem; letter-spacing: 0.02em; }
         .vote-bar-bg { flex-grow: 1; height: 6px; background: #eaeaea; border-radius: 3px; overflow: hidden; position: relative; }
         .vote-bar-fill { height: 100%; background: var(--neon); width: 0%; border-radius: 3px; transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1); }
-        .vote-pct { min-width: 40px; text-align: right; font-size: 1rem; font-variant-numeric: tabular-nums; }
-        .vote-btn {
-            background: var(--txt); color: var(--bg); border: none; padding: 1rem 2.5rem;
-            font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.8rem; cursor: pointer;
-            transition: background 0.2s; margin-top: 2rem; display: inline-block;
-        }
-        .vote-btn:disabled { background: #ccc; cursor: not-allowed; }
-        .vote-btn:not(:disabled):hover { background: var(--neon); }
+        .vote-count { min-width: 60px; text-align: right; font-size: 1rem; font-variant-numeric: tabular-nums; }
         .vote-message { margin-top: 1rem; font-size: 1rem; font-style: italic; color: #666; min-height: 2rem; }
 
         /* --- FORMULARIO DE CONTACTO --- */
@@ -153,17 +146,17 @@
             </div>
         </section>
 
-        <!-- IMAGES (Loops) - CORREGIDO CON RUTAS LOCALES PARA MÓVILES -->
+        <!-- IMAGES (Carrusel actualizado con la nueva imagen) -->
         <section id="images">
             <p class="eyebrow">02 — Images</p>
             <h2>Loops</h2>
             <div class="vid-track-wrap">
                 <div class="vid-track" id="vid-track">
-                    <!-- CAMBIO IMPORTANTE: Reemplazamos las URL de Imgur por archivos locales de tu GitHub -->
-                    <div class="vid-card"><video src="videos/loop1.mp4" muted loop playsinline webkit-playsinline preload="metadata"></video></div>
-                    <div class="vid-card"><video src="videos/loop2.mp4" muted loop playsinline webkit-playsinline preload="metadata"></video></div>
-                    <div class="vid-card"><video src="videos/loop3.mp4" muted loop playsinline webkit-playsinline preload="metadata"></video></div>
-                    <div class="vid-card"><video src="videos/loop4.mp4" muted loop playsinline webkit-playsinline preload="metadata"></video></div>
+                    <div class="vid-card"><img src="https://i.imgur.com/0lydFSN.jpeg" alt="Scene 1"></div>
+                    <div class="vid-card"><img src="https://i.imgur.com/J0X7sMt.jpeg" alt="Scene 2"></div>
+                    <!-- IMAGEN REEMPLAZADA -->
+                    <div class="vid-card"><img src="https://i.imgur.com/cVu8qM3.jpeg" alt="Scene 3"></div>
+                    <div class="vid-card"><img src="https://i.imgur.com/HdCgRIW.jpeg" alt="Scene 4"></div>
                 </div>
             </div>
         </section>
@@ -252,39 +245,36 @@
         track.addEventListener('mouseup', () => { isDown = false; });
         track.addEventListener('mousemove', (e) => { if(!isDown) return; e.preventDefault(); const x = e.pageX - track.offsetLeft; const walk = (x - startX) * 2; track.scrollLeft = scrollLeft - walk; });
 
-        // --- SISTEMA DE VOTACIÓN (PORCENTAJE REAL SOBRE EL TOTAL) ---
+        // --- SISTEMA DE VOTACIÓN ---
         const cities = ["Miami", "Detroit", "London", "Paris", "Chicago", "Nairobi"];
         let votes = JSON.parse(localStorage.getItem('nartfron_votes')) || {};
         let hasVoted = localStorage.getItem('nartfron_hasVoted') === 'true';
 
-        // Inicializar votos si están vacíos
         cities.forEach(c => {
             if (!(c in votes)) votes[c] = 0;
         });
 
         function renderVotes() {
             const container = document.getElementById('voteContainer');
-            // Sacamos el total de todos los votos emitidos
-            const total = Object.values(votes).reduce((a, b) => a + b, 0);
+            const values = Object.values(votes);
+            const maxCount = values.length > 0 ? Math.max(...values) : 0;
             
             let html = '';
             cities.forEach(city => {
                 const count = votes[city] || 0;
-                // Calculamos el porcentaje basado en el total. Si total es 0, el porcentaje es 0.
-                const pct = total === 0 ? 0 : Math.round((count / total) * 100);
+                const barWidth = maxCount === 0 ? 0 : (count / maxCount) * 100;
                 html += `
                     <div class="vote-item" data-city="${city}" style="${hasVoted ? 'cursor:default;' : ''}">
                         <span class="vote-city">${city}</span>
                         <div class="vote-bar-bg">
-                            <div class="vote-bar-fill" style="width: ${pct}%;"></div>
+                            <div class="vote-bar-fill" style="width: ${barWidth}%;"></div>
                         </div>
-                        <span class="vote-pct">${pct}%</span>
+                        <span class="vote-count">${count} votes</span>
                     </div>
                 `;
             });
             container.innerHTML = html;
 
-            // Agregar eventos de clic si no ha votado
             if (!hasVoted) {
                 document.querySelectorAll('.vote-item').forEach(el => {
                     el.addEventListener('click', function() {
@@ -308,10 +298,9 @@
             const msg = document.getElementById('voteMessage');
             msg.innerHTML = `You voted for <strong style="color:var(--neon);">${city}</strong>. The next vibe is loading...`;
             
-            renderVotes(); // Renderiza de nuevo, actualizando los porcentajes en tiempo real
+            renderVotes();
         }
 
-        // Renderizar al cargar la página
         renderVotes();
     </script>
 </body>
