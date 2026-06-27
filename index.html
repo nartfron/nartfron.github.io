@@ -3,173 +3,313 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nartfron | 2D Lofi Aesthetics</title>
+    <title>Nartfron · 2D Lofi Aesthetics</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        /* ESTILO GENERAL - FONDO BLANCO CON IMAGEN DE FONDO */
+        /* --- ESTILO EDITORIAL MINIMALISTA --- */
+        :root {
+            --bg: #ffffff;
+            --txt: #111111;
+            --neon: #ff69b4;
+            --gl: rgba(17, 17, 17, 0.05);
+            --font: 'Inter', sans-serif;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            color: #000000;
-            background-color: #ffffff;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-image: url('https://i.imgur.com/AWjUw8z.png');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
+            background: var(--bg);
+            color: var(--txt);
+            font-family: var(--font);
+            font-weight: 400;
+            line-height: 1.6;
+            overflow-x: hidden;
         }
 
-        /* CAPA OSCURA PARA QUE EL TEXTO SE LEA BIEN */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(255, 255, 255, 0.85);
-            z-index: -1;
-        }
-
-        /* CONTENEDOR PRINCIPAL - BORDES RECTOS */
-        .container {
-            position: relative;
-            width: 90%;
-            max-width: 420px;
-            text-align: center;
-            padding: 30px 20px;
-            z-index: 1;
+        /* --- HEADER MINIMALISTA --- */
+        header {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            padding: 1.8rem 2.5rem;
+            display: flex; justify-content: space-between; align-items: center;
             background: rgba(255, 255, 255, 0.95);
-            border: 1px solid #e5e5e5;
-            border-radius: 0px;
+            backdrop-filter: blur(5px);
+            border-bottom: 1px solid var(--gl);
         }
-
-        /* TEXTO DE MARCA */
-        .brand-title {
-            font-size: 28px;
-            font-weight: 700;
-            margin: 0 0 5px 0;
-            color: #000000;
-            letter-spacing: 0.5px;
+        .logo { font-size: 1.2rem; font-weight: 700; letter-spacing: -0.02em; text-decoration: none; color: var(--txt); }
+        .logo span { color: var(--neon); }
+        
+        /* --- MENÚ HAMBURGUESA --- */
+        #ham-btn {
+            display: flex; flex-direction: column; gap: 5px; width: 28px; cursor: pointer; background: none; border: none;
         }
-        .brand-subtitle {
-            font-size: 14px;
-            color: #ff69b4;
-            font-weight: 500;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            margin: 0 0 25px 0;
+        #ham-btn span { display: block; width: 100%; height: 1px; background: var(--txt); transition: all 0.3s ease; }
+        #ham-btn.open span:nth-child(1) { transform: translateY(5.7px) rotate(45deg); }
+        #ham-btn.open span:nth-child(2) { opacity: 0; }
+        #ham-btn.open span:nth-child(3) { transform: translateY(-5.7px) rotate(-45deg); }
+
+        #nav-drawer {
+            position: fixed; inset: 0; z-index: 90; background: var(--bg);
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none; transition: opacity 0.4s ease;
         }
-
-        /* IMAGEN DE PORTADA DEL PRODUCTO */
-        .product-image {
-            width: 100%;
-            border-radius: 0px;
-            margin-bottom: 20px;
-            border: 1px solid #e5e5e5;
+        #nav-drawer.open { opacity: 1; pointer-events: all; }
+        #nav-drawer nav { display: flex; flex-direction: column; gap: 2rem; text-align: left; padding: 0 2.5rem; }
+        #nav-drawer nav a {
+            font-size: 3rem; font-weight: 700; text-decoration: none; color: var(--txt);
+            letter-spacing: -0.03em; transition: color 0.2s;
         }
+        #nav-drawer nav a:hover { color: var(--neon); }
+        
+        /* --- CONTENIDO PRINCIPAL --- */
+        main { padding: 8rem 2.5rem 4rem; max-width: 1200px; margin: 0 auto; }
+        section { padding: 5rem 0; border-top: 1px solid var(--gl); opacity: 0; transform: translateY(20px); transition: opacity 0.8s ease, transform 0.8s ease; }
+        section.visible { opacity: 1; transform: translateY(0); }
 
-        /* TÍTULO Y DESCRIPCIÓN */
-        .product-title {
-            font-size: 20px;
-            font-weight: 600;
-            margin: 0 0 10px 0;
-            color: #000000;
+        .eyebrow { font-size: 1rem; font-weight: 600; color: var(--txt); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1rem; }
+        h2 { font-size: clamp(3rem, 6vw, 5rem); font-weight: 700; letter-spacing: -0.03em; line-height: 0.9; margin-bottom: 2rem; }
+        .lead { font-size: 1.5rem; font-weight: 400; color: #333; max-width: 700px; margin-bottom: 3rem; }
+
+        /* --- CARRUSEL DE VIDEOS (Loops) --- */
+        .vid-track-wrap { width: 100%; overflow: hidden; }
+        .vid-track { display: flex; gap: 1.5rem; padding: 0; will-change: transform; cursor: grab; user-select: none; }
+        .vid-card { flex-shrink: 0; width: 220px; aspect-ratio: 9/16; background: #f0f0f0; border: 1px solid var(--gl); }
+        .vid-card video { width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
+
+        /* --- SISTEMA DE VOTACIÓN --- */
+        .vote-container { max-width: 600px; margin: 0 auto; }
+        .vote-item {
+            display: flex; align-items: center; gap: 1.5rem; margin-bottom: 2rem;
+            cursor: pointer; padding: 0.5rem 0; transition: opacity 0.2s;
         }
-
-        .product-description {
-            font-size: 14px;
-            color: #333333;
-            line-height: 1.5;
-            margin-bottom: 25px;
-            text-align: left;
+        .vote-item:hover { opacity: 0.7; }
+        .vote-city { font-weight: 600; min-width: 100px; text-transform: uppercase; font-size: 1.1rem; letter-spacing: 0.02em; }
+        .vote-bar-bg { flex-grow: 1; height: 6px; background: #eaeaea; border-radius: 3px; overflow: hidden; position: relative; }
+        .vote-bar-fill { height: 100%; background: var(--neon); width: 0%; border-radius: 3px; transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1); }
+        .vote-pct { min-width: 40px; text-align: right; font-size: 1rem; font-variant-numeric: tabular-nums; }
+        .vote-btn {
+            background: var(--txt); color: var(--bg); border: none; padding: 1rem 2.5rem;
+            font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.8rem; cursor: pointer;
+            transition: background 0.2s; margin-top: 2rem; display: inline-block;
         }
+        .vote-btn:disabled { background: #ccc; cursor: not-allowed; }
+        .vote-btn:not(:disabled):hover { background: var(--neon); }
+        .vote-message { margin-top: 1rem; font-size: 1rem; font-style: italic; color: #666; min-height: 2rem; }
 
-        /* BOTONES UNIFORMES - ESTILO LIMPIO */
-        .btn-social {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            padding: 14px 0;
-            text-decoration: none;
-            color: #000000;
-            font-size: 15px;
-            border: 1px solid #e5e5e5;
-            border-radius: 0px;
-            transition: all 0.2s ease;
-            width: 100%;
-        }
+        /* --- FORMULARIO DE CONTACTO --- */
+        .ff { position: relative; margin-bottom: 3rem; max-width: 500px; }
+        .ff input, .ff textarea { width: 100%; border: none; border-bottom: 1px solid rgba(0,0,0,0.1); padding: 1.5rem 0 0.5rem; font-family: var(--font); font-size: 1rem; outline: none; background: transparent; color: var(--txt); }
+        .ff input:focus, .ff textarea:focus { border-color: var(--txt); }
+        .ff label { position: absolute; top: 1.5rem; left: 0; font-size: 0.9rem; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; color: #888; pointer-events: none; transition: all 0.3s ease; }
+        .ff input:focus ~ label, .ff input:not(:placeholder-shown) ~ label { top: 0; font-size: 0.7rem; color: var(--txt); }
+        .btn { display: inline-block; background: var(--txt); color: var(--bg); padding: 1rem 2.5rem; text-decoration: none; font-size: 0.9rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; border: none; cursor: pointer; transition: background 0.2s; }
+        .btn:hover { background: var(--neon); }
 
-        .btn-social:hover {
-            background: #f5f5f5;
-            border-color: #ff69b4;
-        }
-
-        .btn-social i { font-size: 18px; }
-
-        /* COLORES DE ICONOS */
-        .btn-spotify i { color: #1DB954; }
-        .btn-instagram i { color: #E1306C; }
-        .btn-youtube i { color: #FF0000; }
-        .btn-custom i { color: #ff69b4; }
-        .btn-email i { color: #333333; }
-
-        footer {
-            margin-top: 20px;
-            font-size: 11px;
-            color: #888888;
-        }
+        footer { padding: 2.5rem; border-top: 1px solid var(--gl); display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; color: #888; }
+        @media (max-width: 768px) { header, main { padding-left: 1.5rem; padding-right: 1.5rem; } #nav-drawer nav a { font-size: 2rem; } .vote-item { gap: 1rem; } .vote-city { min-width: 70px; font-size: 0.9rem; } }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        
-        <!-- TEXTO DE MARCA -->
-        <h1 class="brand-title">Nartfron</h1>
-        <p class="brand-subtitle">2D Lofi Aesthetics</p>
+    <!-- HEADER -->
+    <header>
+        <a href="#" class="logo">Nartfron<span>.</span></a>
+        <button id="ham-btn" aria-label="Menu">
+            <span></span><span></span><span></span>
+        </button>
+    </header>
 
-        <!-- IMAGEN DE PORTADA -->
-        <img src="https://i.imgur.com/uNlsfFb.png" alt="Custom 2D Lofi Scene" class="product-image">
-
-        <h1 class="product-title">Custom 2D Lofi Scene</h1>
-
-        <p class="product-description">
-            Personalized 9:16 2D Lofi scene, NYC or Rio style.
-        </p>
-
-        <!-- BOTONES SOCIALES Y DE ACCIÓN (TODOS UNIFORMES) -->
-        <div class="social-links">
-            <!-- Botón de YouTube (ACTUALIZADO CON TU LINK) -->
-            <a href="https://www.youtube.com/@Nartfron" target="_blank" class="btn-social btn-youtube">
-                <i class="fab fa-youtube"></i> YouTube
-            </a>
-
-            <!-- Botón de Spotify -->
-            <a href="https://open.spotify.com/playlist/3G40MY61eZ8fhPr1iAw5dC?si=581c2a4842b64d7f" target="_blank" class="btn-social btn-spotify">
-                <i class="fab fa-spotify"></i> Listen to the Playlist
-            </a>
-
-            <!-- Botón de Instagram -->
-            <a href="https://www.instagram.com/nartfron/" target="_blank" class="btn-social btn-instagram">
-                <i class="fab fa-instagram"></i> See the Portfolio
-            </a>
-
-            <!-- Botón de "Your Custom Scene" (Redirige a Gumroad) -->
-            <a href="https://nartistry.gumroad.com/l/nartfron" target="_blank" class="btn-social btn-custom">
-                <i class="fas fa-palette"></i> Your Custom Scene
-            </a>
-
-            <!-- Botón de Colaboración / Emprendedores (Abre el correo) -->
-            <a href="mailto:nartcontactme@gmail.com" class="btn-social btn-email">
-                <i class="fas fa-envelope"></i> Entrepreneurs & Collab
-            </a>
-        </div>
-
-        <footer>© 2026 Nartfron</footer>
-
+    <!-- MENU DRAWER -->
+    <div id="nav-drawer">
+        <nav>
+            <a href="#statement">Statement</a>
+            <a href="#images">Images</a>
+            <a href="#connect">Sounds</a>
+            <a href="#vote">Vote</a>
+            <a href="#inquiries">Inquiries</a>
+        </nav>
     </div>
+
+    <main>
+        <!-- HERO -->
+        <section id="hero" class="visible" style="border-top: none; padding-top: 0;">
+            <h1 style="font-size: clamp(4rem, 10vw, 8rem); font-weight: 700; letter-spacing: -0.04em; line-height: 0.85; margin-bottom: 1rem;">NYC 2D<br>Lofi Aesthetics.</h1>
+            <p style="font-size: 1.2rem; color: #555; max-width: 600px;">
+                Love is not noise. It is the caress of rain on glass, the neon light embracing Black skin, and the sacred right to exist in calm.
+            </p>
+        </section>
+
+        <!-- STATEMENT -->
+        <section id="statement">
+            <p class="eyebrow">01 — Manifiesto</p>
+            <h2>Statement</h2>
+            <p class="lead">
+                Love, in its most radical form, is not shouted. It is held. This space is an altar dedicated to Black intimacy: to care, to rest, and to the beauty of existing without haste.
+            </p>
+            <div style="max-width: 700px; font-size: 1.1rem; line-height: 2; color: #333;">
+                <p>
+                    Our bodies have been designed for struggle, but they deserve rest. Like the rain that washes the city, like the neon that tints the night in pink and purple, love flourishes in stillness. Nartfron is a testament that Black culture is not only movement, but also pause, tenderness, and a home built in the memory of affection. Here, we romanticize unhurried love, the connection that needs no words, and the aesthetic of a life chosen to be lived with an awake soul.
+                </p>
+            </div>
+        </section>
+
+        <!-- IMAGES (Loops) -->
+        <section id="images">
+            <p class="eyebrow">02 — Images</p>
+            <h2>Loops</h2>
+            <div class="vid-track-wrap">
+                <div class="vid-track" id="vid-track">
+                    <div class="vid-card"><video src="https://i.imgur.com/w5U0gJX.mp4" muted loop></video></div>
+                    <div class="vid-card"><video src="https://i.imgur.com/YTgmItV.mp4" muted loop></video></div>
+                    <div class="vid-card"><video src="https://i.imgur.com/RB79JNW.mp4" muted loop></video></div>
+                    <div class="vid-card"><video src="https://i.imgur.com/PJhazzZ.mp4" muted loop></video></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SOUNDS & VISUALS -->
+        <section id="connect">
+            <p class="eyebrow">03 — Sounds & Visuals</p>
+            <h2>Connect</h2>
+            <p class="lead" style="font-size: 1.2rem; font-weight: 400;">
+                A soundtrack for love and memory. Slow rhythms and atmospheres that wrap around the Black soul.
+            </p>
+            
+            <div style="max-width: 500px; margin-bottom: 2.5rem;">
+                <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/3G40MY61eZ8fhPr1iAw5dC?utm_source=generator" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+            </div>
+
+            <a href="https://www.youtube.com/@Nartfron" target="_blank" class="btn" style="background: var(--txt); color: var(--bg);">
+                <i class="fab fa-youtube" style="margin-right: 10px;"></i> Visit YouTube Channel
+            </a>
+        </section>
+
+        <!-- NUEVO APARTADO DE VOTACIÓN -->
+        <section id="vote">
+            <p class="eyebrow">04 — Vote</p>
+            <h2>Next Vibe City</h2>
+            <p class="lead" style="font-size: 1.2rem; font-weight: 400;">
+                Where should the neon rain fall next? Select a city to cast your voice.
+            </p>
+
+            <div class="vote-container" id="voteContainer">
+                <!-- Los items se generarán con JS -->
+            </div>
+            <div class="vote-message" id="voteMessage"></div>
+        </section>
+
+        <!-- INQUIRIES -->
+        <section id="inquiries">
+            <p class="eyebrow">05 — Contact</p>
+            <h2>Inquiries</h2>
+            <p class="lead" style="font-size: 1.2rem; font-weight: 400;">For custom 2D commissions, brand collaborations, or just to say hello — reach out.</p>
+            <form action="https://formspree.io/f/xjgdnzba" method="POST">
+                <div class="ff"><input type="text" name="name" placeholder=" " required><label>Name</label></div>
+                <div class="ff"><input type="email" name="email" placeholder=" " required><label>Email</label></div>
+                <div class="ff"><textarea name="message" rows="4" placeholder=" " required></textarea><label>Message</label></div>
+                <button type="submit" class="btn">Send Message</button>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2026 Nartfron · NYC 2D Lofi</p>
+        <a href="https://www.instagram.com/nartfron/" target="_blank" style="color:#888; text-decoration:none;">Instagram @nartfron</a>
+    </footer>
+
+    <!-- SCRIPT -->
+    <script>
+        // --- MENÚ HAMBURGUESA Y CARRUSEL ---
+        const btn = document.getElementById('ham-btn');
+        const drawer = document.getElementById('nav-drawer');
+        btn.addEventListener('click', () => {
+            drawer.classList.toggle('open');
+            btn.classList.toggle('open');
+            document.body.style.overflow = drawer.classList.contains('open') ? 'hidden' : '';
+        });
+        document.querySelectorAll('#nav-drawer a').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const target = document.querySelector(link.getAttribute('href'));
+                drawer.classList.remove('open');
+                btn.classList.remove('open');
+                document.body.style.overflow = '';
+                if(target) target.scrollIntoView({behavior:'smooth'});
+            });
+        });
+
+        // Scroll Reveal
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => { if(entry.isIntersecting) entry.target.classList.add('visible'); });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('section:not(#hero)').forEach(s => observer.observe(s));
+
+        const track = document.getElementById('vid-track');
+        let isDown = false, startX, scrollLeft;
+        track.addEventListener('mousedown', (e) => { isDown = true; startX = e.pageX - track.offsetLeft; scrollLeft = track.scrollLeft; });
+        track.addEventListener('mouseleave', () => { isDown = false; });
+        track.addEventListener('mouseup', () => { isDown = false; });
+        track.addEventListener('mousemove', (e) => { if(!isDown) return; e.preventDefault(); const x = e.pageX - track.offsetLeft; const walk = (x - startX) * 2; track.scrollLeft = scrollLeft - walk; });
+
+        // --- SISTEMA DE VOTACIÓN ---
+        const cities = ["Miami", "Detroit", "London", "Paris", "Chicago", "Nairobi"];
+        let votes = JSON.parse(localStorage.getItem('nartfron_votes')) || {};
+        let hasVoted = localStorage.getItem('nartfron_hasVoted') === 'true';
+
+        // Inicializar votos si están vacíos
+        cities.forEach(c => {
+            if (!(c in votes)) votes[c] = 0;
+        });
+
+        function renderVotes() {
+            const container = document.getElementById('voteContainer');
+            const total = Object.values(votes).reduce((a, b) => a + b, 0);
+            
+            let html = '';
+            cities.forEach(city => {
+                const count = votes[city] || 0;
+                const pct = total === 0 ? 0 : Math.round((count / total) * 100);
+                html += `
+                    <div class="vote-item" data-city="${city}" style="${hasVoted ? 'cursor:default;' : ''}">
+                        <span class="vote-city">${city}</span>
+                        <div class="vote-bar-bg">
+                            <div class="vote-bar-fill" style="width: ${pct}%;"></div>
+                        </div>
+                        <span class="vote-pct">${pct}%</span>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+
+            // Agregar eventos de clic si no ha votado
+            if (!hasVoted) {
+                document.querySelectorAll('.vote-item').forEach(el => {
+                    el.addEventListener('click', function() {
+                        const city = this.dataset.city;
+                        castVote(city);
+                    });
+                });
+            } else {
+                document.getElementById('voteMessage').innerHTML = "You've already cast your vote. Thanks for shaping the next vibe!";
+            }
+        }
+
+        function castVote(city) {
+            if (hasVoted) return;
+            
+            votes[city] = (votes[city] || 0) + 1;
+            localStorage.setItem('nartfron_votes', JSON.stringify(votes));
+            localStorage.setItem('nartfron_hasVoted', 'true');
+            hasVoted = true;
+            
+            const msg = document.getElementById('voteMessage');
+            msg.innerHTML = `You voted for <strong style="color:var(--neon);">${city}</strong>. The next vibe is loading...`;
+            
+            renderVotes();
+        }
+
+        // Renderizar al cargar la página
+        renderVotes();
+    </script>
 </body>
 </html>
