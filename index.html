@@ -71,18 +71,34 @@
         .lead { font-size: 1.5rem; font-weight: 400; color: #333; max-width: 700px; margin-bottom: 3rem; }
 
         /* --- CARRUSEL DE IMÁGENES --- */
-        .vid-track-wrap { width: 100%; overflow: hidden; }
-        .vid-track { display: flex; gap: 1.5rem; padding: 0; will-change: transform; cursor: grab; user-select: none; }
-        .vid-card { flex-shrink: 0; width: 220px; aspect-ratio: 9/16; background: #f0f0f0; border: 1px solid var(--gl); }
+        .vid-track-wrap { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; scroll-behavior: smooth; }
+        .vid-track { 
+            display: flex; 
+            gap: 1.5rem; 
+            padding: 0; 
+            scroll-snap-type: x mandatory; 
+            cursor: grab; 
+            user-select: none; 
+            flex-wrap: nowrap;
+        }
+        .vid-card { 
+            flex-shrink: 0; 
+            width: 220px; 
+            aspect-ratio: 9/16; 
+            background: #f0f0f0; 
+            border: 1px solid var(--gl);
+            scroll-snap-align: start;
+        }
         .vid-card img { width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
 
-        /* --- SISTEMA DE VOTACIÓN --- */
+        /* --- SISTEMA DE VOTACIÓN (CORREGIDO) --- */
         .vote-container { max-width: 600px; margin: 0 auto; }
         .vote-item {
             display: flex; align-items: center; gap: 1.5rem; margin-bottom: 2rem;
             cursor: pointer; padding: 0.5rem 0; transition: opacity 0.2s;
+            touch-action: manipulation; /* Elimina el retraso de 300ms en móviles */
         }
-        .vote-item:hover { opacity: 0.7; }
+        .vote-item:active { opacity: 0.5; }
         .vote-city { font-weight: 600; min-width: 100px; text-transform: uppercase; font-size: 1.1rem; letter-spacing: 0.02em; }
         .vote-bar-bg { flex-grow: 1; height: 6px; background: #eaeaea; border-radius: 3px; overflow: hidden; position: relative; }
         .vote-bar-fill { height: 100%; background: var(--neon); width: 0%; border-radius: 3px; transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1); }
@@ -146,7 +162,7 @@
             </div>
         </section>
 
-        <!-- IMAGES (Carrusel actualizado con la nueva imagen) -->
+        <!-- IMAGES -->
         <section id="images">
             <p class="eyebrow">02 — Images</p>
             <h2>Loops</h2>
@@ -154,7 +170,6 @@
                 <div class="vid-track" id="vid-track">
                     <div class="vid-card"><img src="https://i.imgur.com/0lydFSN.jpeg" alt="Scene 1"></div>
                     <div class="vid-card"><img src="https://i.imgur.com/J0X7sMt.jpeg" alt="Scene 2"></div>
-                    <!-- IMAGEN REEMPLAZADA -->
                     <div class="vid-card"><img src="https://i.imgur.com/cVu8qM3.jpeg" alt="Scene 3"></div>
                     <div class="vid-card"><img src="https://i.imgur.com/HdCgRIW.jpeg" alt="Scene 4"></div>
                 </div>
@@ -178,7 +193,7 @@
             </a>
         </section>
 
-        <!-- APARTADO DE VOTACIÓN -->
+        <!-- APARTADO DE VOTACIÓN (CORREGIDO) -->
         <section id="vote">
             <p class="eyebrow">04 — Vote</p>
             <h2>Next Vibe City</h2>
@@ -186,9 +201,7 @@
                 Where should the neon rain fall next? Select a city to cast your voice.
             </p>
 
-            <div class="vote-container" id="voteContainer">
-                <!-- Los items se generarán con JS -->
-            </div>
+            <div class="vote-container" id="voteContainer"></div>
             <div class="vote-message" id="voteMessage"></div>
         </section>
 
@@ -211,9 +224,9 @@
         <a href="https://www.instagram.com/nartfron/" target="_blank" style="color:#888; text-decoration:none;">Instagram @nartfron</a>
     </footer>
 
-    <!-- SCRIPT -->
+    <!-- SCRIPT (Corregido para móvil) -->
     <script>
-        // --- MENÚ HAMBURGUESA Y CARRUSEL ---
+        // --- MENÚ HAMBURGUESA Y SCROLL REVEAL ---
         const btn = document.getElementById('ham-btn');
         const drawer = document.getElementById('nav-drawer');
         btn.addEventListener('click', () => {
@@ -232,27 +245,31 @@
             });
         });
 
-        // Scroll Reveal
         const observer = new IntersectionObserver(entries => {
             entries.forEach(entry => { if(entry.isIntersecting) entry.target.classList.add('visible'); });
         }, { threshold: 0.1 });
         document.querySelectorAll('section:not(#hero)').forEach(s => observer.observe(s));
 
+        // --- CARRUSEL DE IMÁGENES ---
         const track = document.getElementById('vid-track');
         let isDown = false, startX, scrollLeft;
-        track.addEventListener('mousedown', (e) => { isDown = true; startX = e.pageX - track.offsetLeft; scrollLeft = track.scrollLeft; });
-        track.addEventListener('mouseleave', () => { isDown = false; });
-        track.addEventListener('mouseup', () => { isDown = false; });
+        // Ratón
+        track.addEventListener('mousedown', (e) => { isDown = true; startX = e.pageX - track.offsetLeft; scrollLeft = track.scrollLeft; track.style.cursor = 'grabbing'; });
+        track.addEventListener('mouseleave', () => { isDown = false; track.style.cursor = 'grab'; });
+        track.addEventListener('mouseup', () => { isDown = false; track.style.cursor = 'grab'; });
         track.addEventListener('mousemove', (e) => { if(!isDown) return; e.preventDefault(); const x = e.pageX - track.offsetLeft; const walk = (x - startX) * 2; track.scrollLeft = scrollLeft - walk; });
+        // Táctil
+        track.addEventListener('touchstart', (e) => { isDown = true; startX = e.touches[0].pageX - track.offsetLeft; scrollLeft = track.scrollLeft; });
+        track.addEventListener('touchend', () => { isDown = false; });
+        track.addEventListener('touchmove', (e) => { if(!isDown) return; const x = e.touches[0].pageX - track.offsetLeft; const walk = (x - startX) * 2; track.scrollLeft = scrollLeft - walk; });
 
-        // --- SISTEMA DE VOTACIÓN ---
+        // --- SISTEMA DE VOTACIÓN (INFALIBLE EN CELULAR) ---
         const cities = ["Miami", "Detroit", "London", "Paris", "Chicago", "Nairobi"];
         let votes = JSON.parse(localStorage.getItem('nartfron_votes')) || {};
         let hasVoted = localStorage.getItem('nartfron_hasVoted') === 'true';
 
-        cities.forEach(c => {
-            if (!(c in votes)) votes[c] = 0;
-        });
+        // Inicializar votos
+        cities.forEach(c => { if (!(c in votes)) votes[c] = 0; });
 
         function renderVotes() {
             const container = document.getElementById('voteContainer');
@@ -275,11 +292,15 @@
             });
             container.innerHTML = html;
 
+            // Si no ha votado, añadir evento CLICK (funciona en celular sin conflicto)
             if (!hasVoted) {
                 document.querySelectorAll('.vote-item').forEach(el => {
                     el.addEventListener('click', function() {
                         const city = this.dataset.city;
-                        castVote(city);
+                        // Segunda barrera de seguridad contra doble click
+                        if (!hasVoted) {
+                            castVote(city);
+                        }
                     });
                 });
             } else {
@@ -290,6 +311,7 @@
         function castVote(city) {
             if (hasVoted) return;
             
+            // Sumar el voto
             votes[city] = (votes[city] || 0) + 1;
             localStorage.setItem('nartfron_votes', JSON.stringify(votes));
             localStorage.setItem('nartfron_hasVoted', 'true');
@@ -298,6 +320,7 @@
             const msg = document.getElementById('voteMessage');
             msg.innerHTML = `You voted for <strong style="color:var(--neon);">${city}</strong>. The next vibe is loading...`;
             
+            // Re-renderizar para actualizar la gráfica y el número de votos
             renderVotes();
         }
 
