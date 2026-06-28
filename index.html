@@ -119,24 +119,33 @@
     </style>
 </head>
 <body>
+
+    <!-- HEADER -->
     <header>
         <a href="#" class="logo">Nartfron<span>.</span></a>
         <button id="ham-btn" aria-label="Menu"><span></span><span></span><span></span></button>
     </header>
+
+    <!-- MENU DRAWER -->
     <div id="nav-drawer">
         <nav>
             <a href="#statement">Statement</a>
             <a href="#images">Images</a>
             <a href="#connect">Sounds</a>
             <a href="#vote">Vote</a>
+            <a href="#commissions">Commissions</a>
             <a href="#inquiries">Inquiries</a>
         </nav>
     </div>
+
     <main>
+        <!-- HERO -->
         <section id="hero" class="visible" style="border-top: none; padding-top: 0;">
             <h1 style="font-size: clamp(4rem, 10vw, 8rem); font-weight: 700; letter-spacing: -0.04em; line-height: 0.85; margin-bottom: 1rem;">NYC 2D<br>Lofi Aesthetics.</h1>
             <p style="font-size: 1.2rem; color: #555; max-width: 600px;">Love is not noise. It is the caress of rain on glass, the neon light embracing Black skin, and the sacred right to exist in calm.</p>
         </section>
+
+        <!-- STATEMENT -->
         <section id="statement">
             <p class="eyebrow">01 — Manifiesto</p>
             <h2>Statement</h2>
@@ -145,6 +154,8 @@
                 <p>Our bodies have been designed for struggle, but they deserve rest. Like the rain that washes the city, like the neon that tints the night in pink and purple, love flourishes in stillness. Nartfron is a testament that Black culture is not only movement, but also pause, tenderness, and a home built in the memory of affection. Here, we romanticize unhurried love, the connection that needs no words, and the aesthetic of a life chosen to be lived with an awake soul.</p>
             </div>
         </section>
+
+        <!-- IMAGES -->
         <section id="images">
             <p class="eyebrow">02 — Images</p>
             <h2>Loops</h2>
@@ -157,6 +168,8 @@
                 </div>
             </div>
         </section>
+
+        <!-- SOUNDS & VISUALS -->
         <section id="connect">
             <p class="eyebrow">03 — Sounds & Visuals</p>
             <h2>Connect</h2>
@@ -166,6 +179,8 @@
             </div>
             <a href="https://www.youtube.com/@Nartfron" target="_blank" class="btn" style="background: var(--txt); color: var(--bg);"><i class="fab fa-youtube" style="margin-right: 10px;"></i> Visit YouTube Channel</a>
         </section>
+
+        <!-- VOTE -->
         <section id="vote">
             <p class="eyebrow">04 — Vote</p>
             <h2>Next Vibe City</h2>
@@ -173,24 +188,56 @@
             <div class="vote-container" id="voteContainer"></div>
             <div class="vote-message" id="voteMessage"></div>
         </section>
+
+        <!-- COMMISSIONS -->
+        <section id="commissions">
+            <p class="eyebrow">05 — Commissions</p>
+            <h2>Packages</h2>
+            <p class="lead" style="font-size: 1.2rem; font-weight: 400;">Secure your own piece of the Nartfron universe. Choose your vibe and lock it in.</p>
+            
+            <div style="display: flex; flex-direction: column; gap: 2rem; max-width: 600px;">
+                <!-- Paquete 1 -->
+                <div style="border: 1px solid var(--gl); padding: 2rem; border-radius: 4px;">
+                    <h3 style="font-weight: 700; margin-bottom: 0.5rem; font-size: 1.5rem;">Custom 2D Lofi Scenes</h3>
+                    <p style="margin-bottom: 1.5rem; color: #555; line-height: 1.6;">The classic Nartfron experience. Custom 2D scenes with your characters, our signature neon & rain aesthetic.</p>
+                    <a href="https://nartistry.gumroad.com/l/nartfron" target="_blank" class="btn" style="background: var(--txt); color: var(--bg); display: inline-block;">
+                        Purchase Here <i class="fas fa-arrow-right" style="margin-left: 8px;"></i>
+                    </a>
+                </div>
+
+                <!-- Paquete 2 -->
+                <div style="border: 1px solid var(--gl); padding: 2rem; border-radius: 4px;">
+                    <h3 style="font-weight: 700; margin-bottom: 0.5rem; font-size: 1.5rem;">5 Custom Scenes + 1 Cover Art Square</h3>
+                    <p style="margin-bottom: 1.5rem; color: #555; line-height: 1.6;">The full bundle. 5 custom Lofi scenes (9:16) plus an exclusive square cover art piece for your Spotify playlist or album art.</p>
+                    <a href="https://nartistry.gumroad.com/l/epbftw" target="_blank" class="btn" style="background: var(--neon); color: #fff; display: inline-block;">
+                        Purchase Here <i class="fas fa-arrow-right" style="margin-left: 8px;"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- INQUIRIES -->
         <section id="inquiries">
-            <p class="eyebrow">05 — Contact</p>
+            <p class="eyebrow">06 — Contact</p>
             <h2>Inquiries</h2>
-            <p class="lead" style="font-size: 1.2rem; font-weight: 400;">For custom 2D commissions, brand collaborations, or just to say hello — reach out.</p>
+            <!-- TEXTO ACTUALIZADO (Eliminado "custom 2D commissions") -->
+            <p class="lead" style="font-size: 1.2rem; font-weight: 400;">For brand collaborations, or just to say hello — reach out.</p>
             <form action="https://formspree.io/f/xjgdnzba" method="POST">
                 <div class="ff"><input type="text" name="name" placeholder=" " required><label>Name</label></div>
                 <div class="ff"><input type="email" name="email" placeholder=" " required><label>Email</label></div>
+                <div class="ff"><input type="text" name="instagram" placeholder=" " required><label>Instagram</label></div>
                 <div class="ff"><textarea name="message" rows="4" placeholder=" " required></textarea><label>Message</label></div>
                 <button type="submit" class="btn">Send Message</button>
             </form>
         </section>
     </main>
+
     <footer>
         <p>© 2026 Nartfron · NYC 2D Lofi</p>
         <a href="https://www.instagram.com/nartfron/" target="_blank" style="color:#888; text-decoration:none;">Instagram @nartfron</a>
     </footer>
 
-    <!-- 1. LIBRERÍAS DE FIREBASE -->
+    <!-- SCRIPTS -->
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
 
@@ -214,7 +261,7 @@
         const observer = new IntersectionObserver(entries => { entries.forEach(entry => { if(entry.isIntersecting) entry.target.classList.add('visible'); }); }, { threshold: 0.1 });
         document.querySelectorAll('section:not(#hero)').forEach(s => observer.observe(s));
 
-        // --- CARRUSEL DE IMÁGENES ---
+        // --- CARRUSEL ---
         const track = document.getElementById('vid-track');
         let isDown = false, startX, scrollLeft;
         track.addEventListener('mousedown', (e) => { isDown = true; startX = e.pageX - track.offsetLeft; scrollLeft = track.scrollLeft; track.style.cursor = 'grabbing'; });
@@ -225,8 +272,7 @@
         track.addEventListener('touchend', () => { isDown = false; });
         track.addEventListener('touchmove', (e) => { if(!isDown) return; const x = e.touches[0].pageX - track.offsetLeft; const walk = (x - startX) * 2; track.scrollLeft = scrollLeft - walk; });
 
-
-        // --- CONFIGURACIÓN DE FIREBASE (Tus claves insertadas) ---
+        // --- VOTACIÓN CON FIREBASE ---
         const firebaseConfig = {
             apiKey: "AIzaSyAjFvP7CV1GbhJzM_ykh52iHmRZhhF94oc",
             authDomain: "nartfron-b1364.firebaseapp.com",
@@ -240,18 +286,15 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        // --- VARIABLES DE VOTACIÓN ---
         const cities = ["Miami", "Detroit", "London", "Paris", "Chicago", "Nairobi"];
-        let hasVoted = false; // Por sesión, permite volver a votar si recargas la página
+        let hasVoted = false;
 
-        // --- LEER VOTOS EN TIEMPO REAL ---
         const votesRef = db.ref('votes');
         votesRef.on('value', (snapshot) => {
             const data = snapshot.val() || {};
             renderVotes(data);
         });
 
-        // --- RENDERIZAR GRÁFICA ---
         function renderVotes(data) {
             const container = document.getElementById('voteContainer');
             const values = cities.map(c => data[c] || 0);
@@ -274,14 +317,12 @@
             container.innerHTML = html;
         }
 
-        // --- ACCIÓN DE VOTAR ---
         document.getElementById('voteContainer').addEventListener('click', function(e) {
             if (hasVoted) return;
             const item = e.target.closest('.vote-item');
             if (!item) return;
             const city = item.dataset.city;
 
-            // Guardar el voto en la base de datos global
             const votesRef = db.ref('votes');
             votesRef.transaction((currentData) => {
                 if (currentData === null) currentData = {};
