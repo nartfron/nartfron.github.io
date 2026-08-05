@@ -6,16 +6,17 @@
     <title>Nartfron · 2D Lofi Aesthetics</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        /* --- ESTILO EDITORIAL MINIMALISTA --- */
         :root {
             --bg: #ffffff;
-            --txt: #111111;
-            --neon: #ff69b4;
-            --gl: rgba(17, 17, 17, 0.05);
+            --txt: #0a0a0a;
+            --soft: #f7f7f7;
+            --border: rgba(0,0,0,0.06);
+            --accent: #ff69b4;
             --font: 'Inter', sans-serif;
+            --ease: cubic-bezier(0.16, 1, 0.3, 1);
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -23,199 +24,267 @@
             color: var(--txt);
             font-family: var(--font);
             font-weight: 400;
-            line-height: 1.6;
-            overflow-x: hidden;
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* --- HEADER MINIMALISTA --- */
         header {
             position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-            padding: 1.8rem 2.5rem;
+            padding: 1.5rem 2.5rem;
             display: flex; justify-content: space-between; align-items: center;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(5px);
-            border-bottom: 1px solid var(--gl);
+            background: rgba(255,255,255,0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
         }
-        .logo { font-size: 1.2rem; font-weight: 700; letter-spacing: -0.02em; text-decoration: none; color: var(--txt); }
-        .logo span { color: var(--neon); }
-        
-        /* --- MENÚ HAMBURGUESA --- */
+        .logo { font-size: 1.3rem; font-weight: 700; letter-spacing: -0.02em; text-decoration: none; color: var(--txt); }
+        .logo span { color: var(--accent); font-weight: 800; }
+
         #ham-btn {
-            display: flex; flex-direction: column; gap: 5px; width: 28px; cursor: pointer; background: none; border: none;
+            display: flex; flex-direction: column; gap: 5px; width: 28px; cursor: pointer;
+            background: none; border: none; z-index: 110;
         }
-        #ham-btn span { display: block; width: 100%; height: 1px; background: var(--txt); transition: all 0.3s ease; }
-        #ham-btn.open span:nth-child(1) { transform: translateY(5.7px) rotate(45deg); }
+        #ham-btn span { display: block; width: 100%; height: 2px; background: var(--txt); transition: all 0.3s var(--ease); }
+        #ham-btn.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
         #ham-btn.open span:nth-child(2) { opacity: 0; }
-        #ham-btn.open span:nth-child(3) { transform: translateY(-5.7px) rotate(-45deg); }
+        #ham-btn.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
         #nav-drawer {
             position: fixed; inset: 0; z-index: 90; background: var(--bg);
             display: flex; align-items: center; justify-content: center;
-            opacity: 0; pointer-events: none; transition: opacity 0.4s ease;
+            opacity: 0; pointer-events: none; transition: opacity 0.4s var(--ease);
         }
         #nav-drawer.open { opacity: 1; pointer-events: all; }
-        #nav-drawer nav { display: flex; flex-direction: column; gap: 2rem; text-align: left; padding: 0 2.5rem; }
+        #nav-drawer nav { display: flex; flex-direction: column; gap: 2rem; text-align: center; }
         #nav-drawer nav a {
-            font-size: 3rem; font-weight: 700; text-decoration: none; color: var(--txt);
+            font-size: 2.8rem; font-weight: 700; text-decoration: none; color: var(--txt);
             letter-spacing: -0.03em; transition: color 0.2s;
         }
-        #nav-drawer nav a:hover { color: var(--neon); }
-        
-        /* --- CONTENIDO PRINCIPAL --- */
-        main { padding: 8rem 2.5rem 4rem; max-width: 1200px; margin: 0 auto; }
-        section { padding: 5rem 0; border-top: 1px solid var(--gl); opacity: 0; transform: translateY(20px); transition: opacity 0.8s ease, transform 0.8s ease; }
+        #nav-drawer nav a:hover { color: var(--accent); }
+
+        main { padding-top: 5rem; }
+        section {
+            padding: 6rem 2.5rem; max-width: 1200px; margin: 0 auto;
+            opacity: 0; transform: translateY(20px);
+            transition: opacity 0.8s var(--ease), transform 0.8s var(--ease);
+        }
         section.visible { opacity: 1; transform: translateY(0); }
 
-        .eyebrow { font-size: 1rem; font-weight: 600; color: var(--txt); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1rem; }
-        h2 { font-size: clamp(3rem, 6vw, 5rem); font-weight: 700; letter-spacing: -0.03em; line-height: 0.9; margin-bottom: 2rem; }
-        .lead { font-size: 1.5rem; font-weight: 400; color: #333; max-width: 700px; margin-bottom: 3rem; }
-
-        /* --- CARRUSEL DE IMÁGENES --- */
-        .vid-track-wrap { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; scroll-behavior: smooth; }
-        .vid-track { 
-            display: flex; 
-            gap: 1.5rem; 
-            padding: 0; 
-            scroll-snap-type: x mandatory; 
-            cursor: grab; 
-            user-select: none; 
-            flex-wrap: nowrap;
+        .eyebrow {
+            font-size: 0.8rem; font-weight: 600; color: var(--accent);
+            text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 1rem;
         }
-        .vid-card { 
-            flex-shrink: 0; 
-            width: 220px; 
-            aspect-ratio: 9/16; 
-            background: #f0f0f0; 
-            border: 1px solid var(--gl);
-            scroll-snap-align: start;
-        }
-        .vid-card img { width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
+        h2 { font-size: clamp(3rem, 7vw, 5rem); font-weight: 700; letter-spacing: -0.03em; line-height: 1.05; margin-bottom: 1.5rem; }
+        .lead { font-size: 1.4rem; font-weight: 400; color: #555; max-width: 650px; margin-bottom: 2.5rem; }
 
-        /* --- SISTEMA DE VOTACIÓN --- */
-        .vote-container { max-width: 600px; margin: 0 auto; }
-        .vote-item {
-            display: flex; align-items: center; gap: 1.5rem; margin-bottom: 2rem;
-            cursor: pointer; padding: 0.5rem 0; transition: opacity 0.2s;
-            touch-action: manipulation;
-        }
-        .vote-item:active { opacity: 0.5; }
-        .vote-city { font-weight: 600; min-width: 100px; text-transform: uppercase; font-size: 1.1rem; letter-spacing: 0.02em; }
-        .vote-bar-bg { flex-grow: 1; height: 6px; background: #eaeaea; border-radius: 3px; overflow: hidden; position: relative; }
-        .vote-bar-fill { height: 100%; background: var(--neon); width: 0%; border-radius: 3px; transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1); }
-        .vote-count { min-width: 60px; text-align: right; font-size: 1rem; font-variant-numeric: tabular-nums; }
-        .vote-message { margin-top: 1rem; font-size: 1rem; font-style: italic; color: #666; min-height: 2rem; }
+        #hero { min-height: 90vh; display: flex; flex-direction: column; justify-content: center; padding-top: 0; }
+        #hero h1 { font-size: clamp(5rem, 10vw, 8rem); font-weight: 800; letter-spacing: -0.04em; line-height: 0.9; margin-bottom: 1.5rem; }
+        #hero h1 .accent { color: var(--accent); }
 
-        /* --- FORMULARIO DE CONTACTO --- */
-        .ff { position: relative; margin-bottom: 3rem; max-width: 500px; }
-        .ff input, .ff textarea { width: 100%; border: none; border-bottom: 1px solid rgba(0,0,0,0.1); padding: 1.5rem 0 0.5rem; font-family: var(--font); font-size: 1rem; outline: none; background: transparent; color: var(--txt); }
+        /* Carrusel */
+        .carousel-wrap { position: relative; width: 100%; overflow: hidden; margin-top: 1.5rem; }
+        .carousel-track { display: flex; gap: 2rem; transition: transform 0.6s var(--ease); }
+        .carousel-item {
+            flex: 0 0 auto; width: 260px; height: 420px;
+            border-radius: 20px; overflow: hidden;
+            background: var(--soft); border: 1px solid var(--border);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .carousel-item:hover { transform: translateY(-6px); box-shadow: 0 25px 40px -15px rgba(0,0,0,0.15); }
+        .carousel-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .carousel-controls { display: flex; gap: 1rem; margin-top: 2rem; justify-content: flex-start; }
+        .carousel-controls button {
+            background: var(--bg); border: 1px solid var(--border); color: var(--txt);
+            width: 44px; height: 44px; border-radius: 50%; font-size: 1rem;
+            cursor: pointer; transition: all 0.2s;
+        }
+        .carousel-controls button:hover { background: var(--txt); color: #fff; border-color: var(--txt); }
+
+        /* Tarjetas de servicio */
+        .service-block {
+            margin-bottom: 5rem;
+        }
+        .service-header {
+            display: flex; align-items: baseline; gap: 1.5rem; margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+        .service-header h3 { font-size: 2.2rem; font-weight: 700; letter-spacing: -0.02em; }
+        .service-header .badge {
+            font-size: 0.8rem; font-weight: 600; color: var(--accent);
+            border: 1px solid var(--accent); padding: 0.3rem 1rem; border-radius: 100px;
+            text-transform: uppercase;
+        }
+        .service-desc { color: #555; max-width: 500px; margin-bottom: 1rem; }
+
+        .btn {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            background: var(--txt); color: #fff; padding: 0.9rem 2.2rem;
+            text-decoration: none; font-size: 0.85rem; font-weight: 600;
+            letter-spacing: 0.05em; text-transform: uppercase;
+            border: none; border-radius: 100px; cursor: pointer;
+            transition: all 0.25s; font-family: var(--font);
+            white-space: nowrap;
+        }
+        .btn:hover { background: var(--accent); box-shadow: 0 10px 25px rgba(255,105,180,0.2); }
+
+        /* Coming Soon */
+        .coming-soon {
+            display: flex; align-items: center; justify-content: center;
+            height: 300px; background: var(--soft); border-radius: 20px;
+            border: 1px dashed var(--border); margin-top: 1.5rem;
+        }
+        .coming-soon p {
+            font-size: 1.8rem; font-weight: 600; color: #ccc;
+            letter-spacing: 0.05em; text-transform: uppercase;
+        }
+
+        /* Contacto */
+        .ff { position: relative; margin-bottom: 2.5rem; max-width: 500px; }
+        .ff input, .ff textarea {
+            width: 100%; border: none; border-bottom: 1.5px solid var(--border);
+            padding: 1.2rem 0 0.5rem; font-family: var(--font); font-size: 1rem;
+            outline: none; background: transparent; color: var(--txt); transition: border-color 0.2s;
+        }
         .ff input:focus, .ff textarea:focus { border-color: var(--txt); }
-        .ff label { position: absolute; top: 1.5rem; left: 0; font-size: 0.9rem; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; color: #888; pointer-events: none; transition: all 0.3s ease; }
-        .ff input:focus ~ label, .ff input:not(:placeholder-shown) ~ label { top: 0; font-size: 0.7rem; color: var(--txt); }
-        .btn { display: inline-block; background: var(--txt); color: var(--bg); padding: 1rem 2.5rem; text-decoration: none; font-size: 0.9rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; border: none; cursor: pointer; transition: background 0.2s; }
-        .btn:hover { background: var(--neon); }
+        .ff label {
+            position: absolute; top: 1.2rem; left: 0; font-size: 0.8rem; font-weight: 600;
+            letter-spacing: 0.05em; text-transform: uppercase; color: #aaa;
+            pointer-events: none; transition: all 0.3s var(--ease);
+        }
+        .ff input:focus ~ label, .ff input:not(:placeholder-shown) ~ label,
+        .ff textarea:focus ~ label, .ff textarea:not(:placeholder-shown) ~ label {
+            top: -0.2rem; font-size: 0.65rem; color: var(--txt);
+        }
 
-        footer { padding: 2.5rem; border-top: 1px solid var(--gl); display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; color: #888; }
-        @media (max-width: 768px) { header, main { padding-left: 1.5rem; padding-right: 1.5rem; } #nav-drawer nav a { font-size: 2rem; } .vote-item { gap: 1rem; } .vote-city { min-width: 70px; font-size: 0.9rem; } }
+        footer {
+            padding: 3rem 2.5rem; border-top: 1px solid var(--border);
+            display: flex; justify-content: space-between; align-items: center;
+            font-size: 0.85rem; color: #888; max-width: 1200px; margin: 0 auto;
+        }
+        @media (max-width: 768px) {
+            header, section, footer { padding-left: 1.5rem; padding-right: 1.5rem; }
+            #nav-drawer nav a { font-size: 2.2rem; }
+            .carousel-item { width: 220px; height: 360px; }
+        }
     </style>
 </head>
 <body>
-
-    <!-- HEADER -->
     <header>
         <a href="#" class="logo">Nartfron<span>.</span></a>
         <button id="ham-btn" aria-label="Menu"><span></span><span></span><span></span></button>
     </header>
 
-    <!-- MENU DRAWER -->
     <div id="nav-drawer">
         <nav>
-            <a href="#statement">Statement</a>
-            <a href="#images">Images</a>
-            <a href="#connect">Sounds</a>
-            <a href="#vote">Vote</a>
-            <a href="#commissions">Commissions</a>
-            <a href="#inquiries">Inquiries</a>
+            <a href="#hero">Home</a>
+            <a href="#statement">Manifesto</a>
+            <a href="#services">Services</a>
+            <a href="#content-creators">Creators</a>
+            <a href="#connect">Connect</a>
+            <a href="#inquiries">Contact</a>
         </nav>
     </div>
 
     <main>
-        <!-- HERO -->
-        <section id="hero" class="visible" style="border-top: none; padding-top: 0;">
-            <h1 style="font-size: clamp(4rem, 10vw, 8rem); font-weight: 700; letter-spacing: -0.04em; line-height: 0.85; margin-bottom: 1rem;">NYC 2D<br>Lofi Aesthetics.</h1>
-            <p style="font-size: 1.2rem; color: #555; max-width: 600px;">Love is not noise. It is the caress of rain on glass, the neon light embracing Black skin, and the sacred right to exist in calm.</p>
+        <!-- Hero -->
+        <section id="hero" class="visible">
+            <h1>Love is<br><span class="accent">stillness.</span></h1>
+            <p class="lead">Intimate 2D lofi aesthetics for the culture. Black romance, neon nights, and the sacred art of the pause.</p>
         </section>
 
-        <!-- STATEMENT -->
+        <!-- Statement -->
         <section id="statement">
-            <p class="eyebrow">01 — Manifiesto</p>
-            <h2>Statement</h2>
+            <p class="eyebrow">01 · Manifesto</p>
+            <h2>We romanticize<br>the pause.</h2>
             <p class="lead">Love, in its most radical form, is not shouted. It is held. This space is an altar dedicated to Black intimacy: to care, to rest, and to the beauty of existing without haste.</p>
-            <div style="max-width: 700px; font-size: 1.1rem; line-height: 2; color: #333;">
-                <p>Our bodies have been designed for struggle, but they deserve rest. Like the rain that washes the city, like the neon that tints the night in pink and purple, love flourishes in stillness. Nartfron is a testament that Black culture is not only movement, but also pause, tenderness, and a home built in the memory of affection. Here, we romanticize unhurried love, the connection that needs no words, and the aesthetic of a life chosen to be lived with an awake soul.</p>
+            <div style="max-width: 680px; font-size: 1.1rem; line-height: 1.8; color: #444;">
+                <p>Our bodies have been designed for struggle, but they deserve rest. Like the rain that washes the city, like the neon that tints the night in pink and purple, love flourishes in stillness. Nartfron is a testament that Black culture is not only movement, but also pause, tenderness, and a home built in the memory of affection.</p>
             </div>
         </section>
 
-        <!-- IMAGES -->
-        <section id="images">
-            <p class="eyebrow">02 — Images</p>
-            <h2>Loops</h2>
-            <div class="vid-track-wrap">
-                <div class="vid-track" id="vid-track">
-                    <div class="vid-card"><img src="https://i.imgur.com/0lydFSN.jpeg" alt="Scene 1"></div>
-                    <div class="vid-card"><img src="https://i.imgur.com/J0X7sMt.jpeg" alt="Scene 2"></div>
-                    <div class="vid-card"><img src="https://i.imgur.com/cVu8qM3.jpeg" alt="Scene 3"></div>
-                    <div class="vid-card"><img src="https://i.imgur.com/HdCgRIW.jpeg" alt="Scene 4"></div>
-                </div>
-            </div>
-        </section>
-
-        <!-- SOUNDS & VISUALS -->
-        <section id="connect">
-            <p class="eyebrow">03 — Sounds & Visuals</p>
-            <h2>Connect</h2>
-            <p class="lead" style="font-size: 1.2rem; font-weight: 400;">A soundtrack for love and memory. Slow rhythms and atmospheres that wrap around the Black soul.</p>
-            <div style="max-width: 500px; margin-bottom: 2.5rem;">
-                <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/3G40MY61eZ8fhPr1iAw5dC?utm_source=generator" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-            </div>
-            <a href="https://www.youtube.com/@Nartfron" target="_blank" class="btn" style="background: var(--txt); color: var(--bg);"><i class="fab fa-youtube" style="margin-right: 10px;"></i> Visit YouTube Channel</a>
-        </section>
-
-        <!-- VOTE -->
-        <section id="vote">
-            <p class="eyebrow">04 — Vote</p>
-            <h2>Next Vibe City</h2>
-            <p class="lead" style="font-size: 1.2rem; font-weight: 400;">Where should the neon rain fall next? Select a city to cast your voice.</p>
-            <div class="vote-container" id="voteContainer"></div>
-            <div class="vote-message" id="voteMessage"></div>
-        </section>
-
-        <!-- COMMISSIONS (ACTUALIZADO CON UN SOLO ENLACE) -->
-        <section id="commissions">
-            <p class="eyebrow">05 — Commissions</p>
-            <h2>Store</h2>
-            <p class="lead" style="font-size: 1.2rem; font-weight: 400;">Secure your own piece of the Nartfron universe. Browse and choose your package directly from the store.</p>
+        <!-- Services -->
+        <section id="services">
+            <p class="eyebrow">02 · Services</p>
+            <h2>Creative Commissions</h2>
+            <p class="lead">Bespoke 2D lofi visuals for your music, your brand, your product. Each piece crafted in the signature Nartfron style — intimate, neon-lit, and deeply romantic.</p>
             
-            <div style="max-width: 600px;">
-                <div style="border: 1px solid var(--gl); padding: 2rem; border-radius: 4px; text-align: center;">
-                    <h3 style="font-weight: 700; margin-bottom: 0.5rem; font-size: 1.5rem;">Nartfron Commissions</h3>
-                    <p style="margin-bottom: 1.5rem; color: #555; line-height: 1.6;">From custom 2D Lofi scenes to complete bundles with cover art — pick the vibe that fits you.</p>
-                    <a href="https://nartistry.gumroad.com/" target="_blank" class="btn" style="background: var(--neon); color: #fff; display: inline-block;">
-                        Visit Gumroad Store <i class="fas fa-arrow-right" style="margin-left: 8px;"></i>
-                    </a>
+            <!-- Album Covers -->
+            <div class="service-block">
+                <div class="service-header">
+                    <h3>Album Covers</h3>
+                    <span class="badge">Music</span>
                 </div>
+                <p class="service-desc">Custom illustrated covers that translate your sound into a visual embrace. Black love, rain-soaked windows, and that unmistakable neon rose.</p>
+                <div class="carousel-wrap" id="albumCarousel">
+                    <div class="carousel-track">
+                        <div class="carousel-item"><img src="https://i.imgur.com/SPbRCub.png" alt="Album cover example 1"></div>
+                        <div class="carousel-item"><img src="https://i.imgur.com/zQOvG0V.png" alt="Album cover example 2"></div>
+                        <div class="carousel-item"><img src="https://i.imgur.com/VxW5Sfe.png" alt="Album cover example 3"></div>
+                        <div class="carousel-item"><img src="https://i.imgur.com/IjZpCgR.png" alt="Album cover example 4"></div>
+                    </div>
+                    <div class="carousel-controls">
+                        <button class="prevBtn"><i class="fas fa-arrow-left"></i></button>
+                        <button class="nextBtn"><i class="fas fa-arrow-right"></i></button>
+                    </div>
+                </div>
+                <a href="#inquiries" class="btn" style="margin-top:1.5rem;">Inquire for Album Cover</a>
+            </div>
+
+            <!-- Streetwear Branding -->
+            <div class="service-block">
+                <div class="service-header">
+                    <h3>Streetwear Branding</h3>
+                    <span class="badge">Fashion</span>
+                </div>
+                <p class="service-desc">From lookbooks to logo systems, visual identities that carry the weight of the culture. Oversized fits, nocturnal moods, and that cinematic edge.</p>
+                <div class="carousel-wrap" id="streetwearCarousel">
+                    <div class="carousel-track">
+                        <div class="carousel-item"><img src="https://i.imgur.com/OT6QZBD.png" alt="Streetwear branding example 1"></div>
+                        <div class="carousel-item"><img src="https://i.imgur.com/5cnLUGr.png" alt="Streetwear branding example 2"></div>
+                        <div class="carousel-item"><img src="https://i.imgur.com/Jtv53Us.png" alt="Streetwear branding example 3"></div>
+                    </div>
+                    <div class="carousel-controls">
+                        <button class="prevBtn"><i class="fas fa-arrow-left"></i></button>
+                        <button class="nextBtn"><i class="fas fa-arrow-right"></i></button>
+                    </div>
+                </div>
+                <a href="#inquiries" class="btn" style="margin-top:1.5rem;">Inquire for Branding</a>
+            </div>
+
+            <!-- Content Creators -->
+            <div class="service-block" id="content-creators">
+                <div class="service-header">
+                    <h3>Content Creators</h3>
+                    <span class="badge">Digital</span>
+                </div>
+                <p class="service-desc">Visual assets for streamers, YouTubers, and digital storytellers. Overlays, banners, and animated loops that bring your channel into the Nartfron universe — intimate, cinematic, and unapologetically Black.</p>
+                <div class="coming-soon">
+                    <p>Coming Soon</p>
+                </div>
+                <a href="#inquiries" class="btn" style="margin-top:1.5rem;">Inquire for Creators</a>
             </div>
         </section>
 
-        <!-- INQUIRIES -->
+        <!-- Connect -->
+        <section id="connect">
+            <p class="eyebrow">03 · Sounds & Visuals</p>
+            <h2>Connect</h2>
+            <p class="lead">A soundtrack for love and memory. Slow rhythms and atmospheres that wrap around the Black soul.</p>
+            <div style="max-width: 500px; margin-bottom: 2rem;">
+                <iframe style="border-radius:16px" src="https://open.spotify.com/embed/playlist/3G40MY61eZ8fhPr1iAw5dC?utm_source=generator" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+            </div>
+            <a href="https://www.youtube.com/@Nartfron" target="_blank" class="btn"><i class="fab fa-youtube"></i> YouTube Channel</a>
+        </section>
+
+        <!-- Contact -->
         <section id="inquiries">
-            <p class="eyebrow">06 — Contact</p>
+            <p class="eyebrow">04 · Contact</p>
             <h2>Inquiries</h2>
-            <p class="lead" style="font-size: 1.2rem; font-weight: 400;">For brand collaborations, or just to say hello — reach out.</p>
+            <p class="lead">For brand collaborations, commissions, or just to say hello.</p>
             <form action="https://formspree.io/f/xjgdnzba" method="POST">
                 <div class="ff"><input type="text" name="name" placeholder=" " required><label>Name</label></div>
                 <div class="ff"><input type="email" name="email" placeholder=" " required><label>Email</label></div>
                 <div class="ff"><input type="text" name="instagram" placeholder=" " required><label>Instagram</label></div>
-                <div class="ff"><textarea name="message" rows="4" placeholder=" " required></textarea><label>Message</label></div>
+                <div class="ff"><textarea name="message" rows="3" placeholder=" " required></textarea><label>Message</label></div>
                 <button type="submit" class="btn">Send Message</button>
             </form>
         </section>
@@ -226,12 +295,7 @@
         <a href="https://www.instagram.com/nartfron/" target="_blank" style="color:#888; text-decoration:none;">Instagram @nartfron</a>
     </footer>
 
-    <!-- SCRIPTS -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
-
     <script>
-        // --- MENÚ HAMBURGUESA Y SCROLL REVEAL ---
         const btn = document.getElementById('ham-btn');
         const drawer = document.getElementById('nav-drawer');
         btn.addEventListener('click', () => {
@@ -247,81 +311,45 @@
                 if(target) target.scrollIntoView({behavior:'smooth'});
             });
         });
-        const observer = new IntersectionObserver(entries => { entries.forEach(entry => { if(entry.isIntersecting) entry.target.classList.add('visible'); }); }, { threshold: 0.1 });
+
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => { if(entry.isIntersecting) entry.target.classList.add('visible'); });
+        }, { threshold: 0.1 });
         document.querySelectorAll('section:not(#hero)').forEach(s => observer.observe(s));
 
-        // --- CARRUSEL ---
-        const track = document.getElementById('vid-track');
-        let isDown = false, startX, scrollLeft;
-        track.addEventListener('mousedown', (e) => { isDown = true; startX = e.pageX - track.offsetLeft; scrollLeft = track.scrollLeft; track.style.cursor = 'grabbing'; });
-        track.addEventListener('mouseleave', () => { isDown = false; track.style.cursor = 'grab'; });
-        track.addEventListener('mouseup', () => { isDown = false; track.style.cursor = 'grab'; });
-        track.addEventListener('mousemove', (e) => { if(!isDown) return; e.preventDefault(); const x = e.pageX - track.offsetLeft; const walk = (x - startX) * 2; track.scrollLeft = scrollLeft - walk; });
-        track.addEventListener('touchstart', (e) => { isDown = true; startX = e.touches[0].pageX - track.offsetLeft; scrollLeft = track.scrollLeft; });
-        track.addEventListener('touchend', () => { isDown = false; });
-        track.addEventListener('touchmove', (e) => { if(!isDown) return; const x = e.touches[0].pageX - track.offsetLeft; const walk = (x - startX) * 2; track.scrollLeft = scrollLeft - walk; });
+        // Inicializar todos los carruseles
+        function initCarousel(wrap) {
+            const track = wrap.querySelector('.carousel-track');
+            const prevBtn = wrap.querySelector('.prevBtn');
+            const nextBtn = wrap.querySelector('.nextBtn');
+            const items = track.querySelectorAll('.carousel-item');
+            let currentIndex = 0;
+            let itemWidth = items[0]?.getBoundingClientRect().width + 32;
 
-        // --- VOTACIÓN CON FIREBASE ---
-        const firebaseConfig = {
-            apiKey: "AIzaSyAjFvP7CV1GbhJzM_ykh52iHmRZhhF94oc",
-            authDomain: "nartfron-b1364.firebaseapp.com",
-            databaseURL: "https://nartfron-b1364-default-rtdb.firebaseio.com",
-            projectId: "nartfron-b1364",
-            storageBucket: "nartfron-b1364.firebasestorage.app",
-            messagingSenderId: "102384454",
-            appId: "1:102384454:web:3a98d0714f3c7a94731b47",
-            measurementId: "G-0XZEEQT77B"
-        };
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.database();
-
-        const cities = ["Miami", "Detroit", "London", "Paris", "Chicago", "Nairobi"];
-        let hasVoted = false;
-
-        const votesRef = db.ref('votes');
-        votesRef.on('value', (snapshot) => {
-            const data = snapshot.val() || {};
-            renderVotes(data);
-        });
-
-        function renderVotes(data) {
-            const container = document.getElementById('voteContainer');
-            const values = cities.map(c => data[c] || 0);
-            const maxCount = Math.max(...values, 0);
-            
-            let html = '';
-            cities.forEach(city => {
-                const count = data[city] || 0;
-                const barWidth = maxCount === 0 ? 0 : (count / maxCount) * 100;
-                html += `
-                    <div class="vote-item" data-city="${city}" style="${hasVoted ? 'cursor:default;' : 'cursor:pointer;'}">
-                        <span class="vote-city">${city}</span>
-                        <div class="vote-bar-bg">
-                            <div class="vote-bar-fill" style="width: ${barWidth}%;"></div>
-                        </div>
-                        <span class="vote-count">${count} votes</span>
-                    </div>
-                `;
+            function update() {
+                track.style.transform = `translateX(-${currentIndex * itemWidth}px)`;
+            }
+            nextBtn.addEventListener('click', () => {
+                if (currentIndex < items.length - 1) { currentIndex++; update(); }
             });
-            container.innerHTML = html;
+            prevBtn.addEventListener('click', () => {
+                if (currentIndex > 0) { currentIndex--; update(); }
+            });
+            window.addEventListener('resize', () => {
+                if (items[0]) itemWidth = items[0].getBoundingClientRect().width + 32;
+                update();
+            });
+            // Touch swipe básico
+            let startX = 0;
+            track.addEventListener('touchstart', (e) => { startX = e.touches[0].clientX; });
+            track.addEventListener('touchend', (e) => {
+                const diff = startX - e.changedTouches[0].clientX;
+                if (diff > 40 && currentIndex < items.length - 1) { currentIndex++; update(); }
+                else if (diff < -40 && currentIndex > 0) { currentIndex--; update(); }
+            });
         }
 
-        document.getElementById('voteContainer').addEventListener('click', function(e) {
-            if (hasVoted) return;
-            const item = e.target.closest('.vote-item');
-            if (!item) return;
-            const city = item.dataset.city;
-
-            const votesRef = db.ref('votes');
-            votesRef.transaction((currentData) => {
-                if (currentData === null) currentData = {};
-                currentData[city] = (currentData[city] || 0) + 1;
-                return currentData;
-            });
-
-            hasVoted = true;
-            document.getElementById('voteMessage').innerHTML = `You voted for <strong style="color:var(--neon);">${city}</strong>. The next vibe is updating for everyone!`;
-        });
+        document.querySelectorAll('.carousel-wrap').forEach(wrap => initCarousel(wrap));
     </script>
 </body>
 </html>
