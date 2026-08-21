@@ -1,516 +1,636 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-GB">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nartfron. · High-End Visuals</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Nartfron Studio · 2D Lofi Art &amp; Afro Culture</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800;900&family=DM+Mono:wght@300;400;500&family=Cormorant+Garamond:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://gumroad.com/js/gumroad.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@600&family=Inter:wght@400&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --bg: #060606;
-            --surface: #0e0e0e;
-            --txt: #f0f0f0;
-            --txt-secondary: #999999;
-            --border: rgba(255,255,255,0.06);
-            --accent: #ff69b4;
-            --accent-glow: rgba(255,105,180,0.2);
-            --font: 'Inter', sans-serif;
-            --font-serif: 'Cormorant Garamond', serif;
-            --font-mono: 'DM Mono', monospace;
-            --ease: cubic-bezier(0.22, 1, 0.36, 1);
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { width: 100%; height: 100%; background: #000; }
+        #scene { position: relative; width: 100%; height: 100vh; min-height: 400px; overflow: hidden; }
+        #c    { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+        .hint {
+            position: absolute;
+            top: 79.18%; left: 18.62%;
+            font-family: 'Inter', sans-serif; font-weight: 400;
+            font-size: clamp(0.5rem, 1vw, 0.875rem);
+            color: #FF1493;
+            pointer-events: none; user-select: none;
+            z-index: 2;
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            background: var(--bg);
-            color: var(--txt);
-            font-family: var(--font);
-            -webkit-font-smoothing: antialiased;
-            overflow-x: hidden;
-            cursor: none;
-        }
-
-        .noise-overlay {
-            position: fixed;
-            inset: 0;
-            z-index: 9998;
-            pointer-events: none;
-            opacity: 0.04;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='1'/%3E%3C/svg%3E");
-            background-repeat: repeat;
-            background-size: 256px 256px;
-        }
-
-        .cursor {
-            position: fixed;
-            width: 8px;
-            height: 8px;
-            background: var(--accent);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 9999;
-            mix-blend-mode: difference;
-            transition: transform 0.1s ease-out, width 0.3s, height 0.3s, border-radius 0.3s;
+        .nartfron-badge {
+            position: absolute;
+            top: 50%;
+            left: 50%;
             transform: translate(-50%, -50%);
+            z-index: 10;
+            font-family: 'Inter Tight', sans-serif;
+            font-weight: 600;
+            font-size: clamp(2rem, 6vw, 5rem);
+            color: #FF1493;
+            text-align: center;
+            letter-spacing: 4px;
+            text-shadow: 0 0 60px rgba(255, 20, 147, 0.15);
+            pointer-events: none;
+            line-height: 1.1;
         }
-        .cursor.hover {
-            width: 40px;
-            height: 40px;
-            background: transparent;
-            border: 1px solid var(--accent);
-            mix-blend-mode: normal;
-        }
-
-        header {
-            position: fixed;
-            top: 0; left: 0; right: 0;
-            z-index: 100;
-            padding: 2rem 3rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            mix-blend-mode: difference;
-            transition: backdrop-filter 0.6s;
-        }
-        header.scrolled { backdrop-filter: blur(20px); }
-        .nav-group { display: flex; flex-direction: column; gap: 0.2rem; }
-        .nav-link {
-            color: #fff;
-            text-decoration: none;
-            font-family: var(--font);
-            font-size: 0.95rem;
-            font-weight: 300;
-            letter-spacing: 0.02em;
-            text-transform: uppercase;
-            padding: 0.1rem 0;
-            transition: color 0.4s;
-            overflow: hidden;
-            height: 24px;
+        .nartfron-badge span {
             display: block;
-            cursor: pointer;
-            background: none;
-            border: none;
+            font-weight: 300;
+            font-size: 0.35em;
+            color: rgba(255,255,255,0.3);
+            letter-spacing: 8px;
+            text-transform: uppercase;
         }
-        .nav-link:hover { color: #ddd; }
-        .nav-link .inner { display: block; transition: transform 0.6s var(--ease); }
-        .nav-link:hover .inner { transform: translateY(-24px); }
-        .nav-link .clone { color: var(--accent); }
-        .nav-link.year { color: #777; font-size: 0.65rem; margin-top: 0.5rem; letter-spacing: 0.05em; }
-        .nav-link.year:hover { color: #777; }
-        .nav-link.year .inner { transition: none; }
-        .nav-link.year:hover .inner { transform: none; }
-
-        section {
-            min-height: 100vh;
+        section { padding: 70px 30px; max-width: 1300px; margin: 0 auto; background: #000; color: #fff; }
+        .section-tag {
+            display: inline-block;
+            font-size: 0.7rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: #FF1493;
+            border: 1px solid rgba(255,20,147,0.25);
+            padding: 4px 16px;
+            border-radius: 30px;
+            margin-bottom: 12px;
+        }
+        h2 {
+            font-family: 'Inter Tight', sans-serif;
+            font-size: clamp(2rem, 5vw, 3.8rem);
+            font-weight: 600;
+            line-height: 1.1;
+            margin-bottom: 20px;
+        }
+        h2 .highlight { color: #FF1493; }
+        h2 .muted { color: rgba(255,255,255,0.3); }
+        p { color: rgba(255,255,255,0.7); line-height: 1.7; max-width: 600px; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: start; }
+        @media (max-width: 900px) { .grid-2 { grid-template-columns: 1fr; } }
+        @media (max-width: 600px) { section { padding: 40px 16px; } }
+        .card {
+            background: rgba(255,255,255,0.03);
+            border-radius: 24px;
+            padding: 30px 24px;
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: all 0.3s ease;
+        }
+        .card:hover { border-color: rgba(255,20,147,0.25); transform: translateY(-4px); }
+        .card h3 { font-size: 1.3rem; margin-bottom: 8px; color: #fff; }
+        .btn-neon {
+            display: inline-block;
+            background: transparent;
+            border: 1.5px solid #FF1493;
+            color: #fff;
+            padding: 12px 36px;
+            border-radius: 60px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 1px;
+            text-decoration: none;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .btn-neon:hover {
+            background: #FF1493;
+            color: #000;
+            box-shadow: 0 0 30px rgba(255,20,147,0.3);
+        }
+        .process-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            width: 140px;
+        }
+        .process-step .num {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            border: 2px solid #FF1493;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 8rem 3rem;
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 1s var(--ease), transform 1s var(--ease);
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #FF1493;
+            margin-bottom: 12px;
+            background: rgba(255,20,147,0.05);
+            transition: 0.3s;
         }
-        section.visible { opacity: 1; transform: translateY(0); }
-
-        #hero { flex-direction: column; text-align: center; }
-        .logo-text {
-            font-family: var(--font);
-            font-size: clamp(4rem, 10vw, 7rem);
-            font-weight: 900;
-            letter-spacing: -0.05em;
-            color: #f5f5f5;
-            line-height: 0.9;
-            text-decoration: none;
-            transition: text-shadow 0.6s;
-        }
-        .logo-text:hover { text-shadow: 0 0 80px var(--accent-glow); }
-        .logo-text span { color: var(--accent); }
-        .hero-subtitle {
-            font-family: var(--font);
-            font-size: 0.7rem;
-            font-weight: 300;
-            letter-spacing: 0.35em;
-            color: #888;
-            margin-top: 2rem;
-            text-transform: uppercase;
-        }
-
-        #manifesto {
-            flex-direction: column;
-            text-align: left;
-            align-items: flex-start;
-            max-width: 720px;
+        .process-step:hover .num { background: #FF1493; color: #000; box-shadow: 0 0 40px rgba(255,20,147,0.2); }
+        .process-step h4 { font-size: 0.9rem; color: #fff; }
+        .process-step p { font-size: 0.75rem; color: rgba(255,255,255,0.4); max-width: 130px; }
+        .process-circle { display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; margin-top: 40px; }
+        footer {
+            background: #000;
+            border-top: 1px solid rgba(255,255,255,0.04);
+            padding: 50px 30px 30px;
+            max-width: 1300px;
             margin: 0 auto;
         }
-        .section-label {
-            font-family: var(--font-mono);
-            font-size: 0.6rem;
-            text-transform: uppercase;
-            letter-spacing: 0.15em;
-            color: var(--accent);
-            margin-bottom: 2.5rem;
-            opacity: 0.7;
+        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; }
+        @media (max-width: 800px) { .footer-grid { grid-template-columns: 1fr 1fr; } }
+        @media (max-width: 500px) { .footer-grid { grid-template-columns: 1fr; } }
+        footer h5 { color: #FF1493; font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 14px; }
+        footer a { color: rgba(255,255,255,0.5); text-decoration: none; font-size: 0.9rem; display: block; margin-bottom: 6px; transition: 0.3s; }
+        footer a:hover { color: #FF1493; }
+        footer .copy { text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.04); color: rgba(255,255,255,0.2); font-size: 0.8rem; }
+        .social-links { display: flex; gap: 14px; margin-top: 10px; }
+        .social-links a { font-size: 1.4rem; color: rgba(255,255,255,0.3); transition: 0.3s; }
+        .social-links a:hover { color: #FF1493; }
+
+        /* ===== FORM ===== */
+        #contact {
+            padding: 70px 30px;
+            max-width: 800px;
+            margin: 0 auto;
+            background: #000;
+            color: #fff;
         }
-        #manifesto h2 {
-            font-family: var(--font-serif);
-            font-size: clamp(2.5rem, 5vw, 3.5rem);
-            font-weight: 400;
-            letter-spacing: -0.02em;
+        #contact .section-tag {
+            display: inline-block;
+            font-size: 0.7rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: #FF1493;
+            border: 1px solid rgba(255,20,147,0.25);
+            padding: 4px 16px;
+            border-radius: 30px;
+            margin-bottom: 12px;
+        }
+        #contact h2 {
+            font-family: 'Inter Tight', sans-serif;
+            font-size: clamp(2rem, 5vw, 3.8rem);
+            font-weight: 600;
             line-height: 1.1;
-            margin-bottom: 2.5rem;
-            font-style: italic;
+            margin-bottom: 10px;
         }
-        #manifesto p {
-            font-size: 1.15rem;
-            color: var(--txt-secondary);
-            line-height: 1.8;
-            max-width: 620px;
-            font-weight: 300;
-        }
-
-        #collaborate {
-            flex-direction: column;
-            text-align: center;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        #collaborate h2 {
-            font-family: var(--font-serif);
-            font-size: clamp(2.5rem, 5vw, 3.5rem);
-            font-weight: 400;
-            letter-spacing: -0.02em;
-            line-height: 1.2;
-            margin-bottom: 2rem;
-            font-style: italic;
-        }
-        #collaborate p {
+        #contact .subtitle {
+            color: rgba(255,255,255,0.5);
             font-size: 1.1rem;
-            color: var(--txt-secondary);
-            line-height: 1.7;
-            margin-bottom: 3rem;
+            margin-bottom: 40px;
+            max-width: 500px;
         }
-        .cta-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.6rem;
-            background: var(--accent);
-            color: #000;
-            padding: 1rem 2.5rem;
-            text-decoration: none;
-            font-size: 0.8rem;
-            font-weight: 600;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            border: none;
-            border-radius: 100px;
-            cursor: pointer;
-            transition: all 0.4s;
-            font-family: var(--font);
-        }
-        .cta-btn:hover {
-            background: #ff8cc6;
-            box-shadow: 0 12px 30px var(--accent-glow);
-            transform: scale(1.03);
-        }
-
-        #connect {
-            flex-direction: column;
-            align-items: flex-start;
-            max-width: 800px;
-            margin: 0 auto;
-            width: 100%;
-        }
-        .connect-content {
-            display: flex;
-            gap: 4rem;
-            align-items: flex-start;
-            width: 100%;
-            flex-wrap: wrap;
-        }
-        .connect-info {
-            flex: 1;
-            min-width: 250px;
-        }
-        .connect-info h3 {
-            font-family: var(--font-serif);
-            font-size: 2rem;
-            font-weight: 400;
-            font-style: italic;
-            margin-bottom: 1rem;
-        }
-        .connect-info p {
-            color: var(--txt-secondary);
-            margin-bottom: 2rem;
-            line-height: 1.6;
-        }
-        .connect-links {
-            display: flex;
-            gap: 2rem;
-            margin-top: 1rem;
-        }
-        .connect-links a {
-            color: var(--txt);
-            text-decoration: none;
-            font-family: var(--font-mono);
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            transition: color 0.3s;
-            border-bottom: 1px solid var(--border);
-            padding-bottom: 0.3rem;
-        }
-        .connect-links a:hover { color: var(--accent); border-color: var(--accent); }
-        .spotify-embed {
-            flex: 0 0 300px;
-            border-radius: 12px;
-            overflow: hidden;
-            border: 1px solid var(--border);
-        }
-
-        #personal {
-            flex-direction: column;
-            align-items: flex-start;
-            max-width: 900px;
-            margin: 0 auto;
-        }
-        .personal-content { display: flex; gap: 5rem; align-items: flex-start; width: 100%; flex-wrap: wrap; }
-        .personal-info { flex: 1; min-width: 300px; }
-        .personal-info h2 {
-            font-family: var(--font-serif);
-            font-size: 3rem;
-            font-weight: 400;
-            letter-spacing: -0.03em;
-            line-height: 1.08;
-            margin-bottom: 2rem;
-            font-style: italic;
-        }
-        .personal-info h2 span { color: var(--accent); font-weight: 700; font-family: var(--font); font-style: normal; }
-        .personal-info p { font-size: 1.05rem; color: var(--txt-secondary); line-height: 1.8; margin-bottom: 2.5rem; max-width: 460px; font-weight: 300; }
-        
-        .gumroad-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.6rem;
-            background: var(--txt);
-            color: var(--bg);
-            padding: 0.9rem 2.2rem;
-            text-decoration: none;
-            font-size: 0.75rem;
-            font-weight: 600;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            border: none;
-            border-radius: 100px;
-            cursor: pointer;
-            transition: all 0.4s;
-            font-family: var(--font);
-        }
-        .gumroad-btn:hover {
-            background: var(--accent);
-            color: #000;
-            box-shadow: 0 12px 30px var(--accent-glow);
-            transform: scale(1.03);
-        }
-
-        #contact { flex-direction: column; align-items: flex-start; max-width: 520px; margin: 0 auto; }
-        #contact form { width: 100%; margin-top: 2.5rem; }
-        .form-group { margin-bottom: 2.5rem; }
+        .form-group { margin-bottom: 24px; }
         .form-group label {
             display: block;
-            font-family: var(--font-mono);
-            font-size: 0.6rem;
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.4);
+            margin-bottom: 6px;
+            letter-spacing: 1.5px;
             text-transform: uppercase;
-            letter-spacing: 0.12em;
-            color: #666;
-            margin-bottom: 0.6rem;
         }
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
+        .form-group input, .form-group select, .form-group textarea {
             width: 100%;
-            padding: 0.9rem 0;
-            background: transparent;
-            border: none;
-            border-bottom: 1px solid var(--border);
-            color: var(--txt);
-            font-family: var(--font);
-            font-size: 1rem;
-            font-weight: 300;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            padding: 14px 18px;
+            color: #fff;
+            font-size: 0.95rem;
+            transition: 0.3s;
+            font-family: 'Inter', sans-serif;
+        }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
             outline: none;
-            transition: border-color 0.4s;
-            resize: none;
+            border-color: #FF1493;
+            background: rgba(255,20,147,0.04);
         }
-        .form-group select {
+        .form-group textarea { min-height: 120px; resize: vertical; }
+        .form-group select option { background: #000; color: #fff; }
+        .btn-submit {
+            display: inline-block;
+            background: #FF1493;
+            color: #000;
+            padding: 14px 48px;
+            border: none;
+            border-radius: 60px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
             cursor: pointer;
-            appearance: none;
-            -webkit-appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%23999999' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 0.5rem center;
+            font-family: 'Inter', sans-serif;
+            margin-top: 10px;
         }
-        .form-group select option { background: var(--surface); color: var(--txt); }
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus { border-color: var(--accent); }
-        .btn {
-            display: inline-flex; align-items: center; gap: 0.6rem;
-            background: var(--txt); color: var(--bg); padding: 0.9rem 2.2rem;
-            text-decoration: none; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.08em;
-            text-transform: uppercase; border: none; border-radius: 100px; cursor: pointer;
-            transition: all 0.4s; font-family: var(--font);
+        .btn-submit:hover {
+            background: #ff4da6;
+            box-shadow: 0 0 40px rgba(255,20,147,0.3);
+            transform: scale(1.02);
         }
-        .btn:hover { background: var(--accent); box-shadow: 0 12px 30px var(--accent-glow); transform: scale(1.03); }
-
-        footer {
-            padding: 2.5rem 3rem; display: flex; justify-content: space-between; align-items: center;
-            border-top: 1px solid var(--border); max-width: 1100px; margin: 0 auto; width: 100%;
-        }
-        footer .social-link {
-            color: var(--txt-secondary); text-decoration: none; font-family: var(--font);
-            font-size: 0.85rem; font-weight: 300; text-transform: uppercase; letter-spacing: 0.03em;
-            transition: color 0.4s; overflow: hidden; height: 22px; display: block;
-        }
-        footer .social-link:hover { color: var(--accent); }
-        footer .social-link .inner { display: block; transition: transform 0.6s var(--ease); }
-        footer .social-link:hover .inner { transform: translateY(-22px); }
-        footer .social-link .clone { color: var(--accent); }
-
-        @media (max-width: 768px) {
-            header { padding: 1.5rem 2rem; }
-            section { padding: 5rem 2rem; }
-            .nav-link { font-size: 0.8rem; height: 20px; }
-            .nav-link:hover .inner { transform: translateY(-20px); }
-            .personal-content { flex-direction: column; gap: 2.5rem; }
-            footer { flex-direction: column; gap: 1.2rem; padding: 2rem; }
-            .cursor { display: none; } body { cursor: auto; }
-            .connect-content { flex-direction: column; gap: 2rem; }
-            .spotify-embed { width: 100%; }
+        @media (max-width: 600px) {
+            .form-group select { font-size: 0.85rem; }
         }
     </style>
 </head>
 <body>
 
-    <div class="noise-overlay"></div>
-    <div class="cursor" id="cursor"></div>
+<!-- ============================================================
+     HERO 3D – NARTFRON STUDIO
+     ============================================================ -->
+<div id="scene">
+    <canvas id="c"></canvas>
+    <div class="nartfron-badge">
+        Nartfron Studio
+        <span>· 2D Lofi Art ·</span>
+    </div>
+    <span class="hint">▼ scroll down</span>
+</div>
 
-    <header id="header">
-        <div class="nav-group">
-            <a href="#manifesto" class="nav-link"><span class="inner"><span>Manifesto</span><br><span class="clone">Manifesto</span></span></a>
-            <a href="#collaborate" class="nav-link"><span class="inner"><span>Collaborate</span><br><span class="clone">Collaborate</span></span></a>
-            <span class="nav-link year"><span class="inner"><span>2025</span></span></span>
-        </div>
-        <div class="nav-group" style="text-align:right;">
-            <a href="#contact" class="nav-link"><span class="inner"><span>Contact</span><br><span class="clone">Contact</span></span></a>
-        </div>
-    </header>
+<script>
+// WebGL2 completo (sin cambios)
+const canvas = document.getElementById('c');
+const gl = canvas.getContext('webgl2', { alpha: false, antialias: false });
+if (!gl) document.getElementById('scene').style.background = '#555';
 
-    <section id="hero" class="visible">
-        <h1 class="logo-text">Nartfron<span>.</span></h1>
-        <p class="hero-subtitle">VISUALS AND CULTURE</p>
-    </section>
+const VS = `#version 300 es
+in vec2 aPos; out vec2 vUv;
+void main(){ vUv=aPos*.5+.5; gl_Position=vec4(aPos,0.,1.); }`;
 
-    <section id="manifesto">
-        <p class="section-label">[manifesto]</p>
-        <h2>We romanticize the pause.</h2>
-        <p>Love, in its most radical form, is not shouted. It is held. This space is an altar dedicated to Black intimacy: to care, to rest, and to the beauty of existing without haste. Our bodies have been designed for struggle, but they deserve rest. Like the rain that washes the city, like the neon that tints the night in pink and purple, love flourishes in stillness.</p>
-    </section>
+const FG = `#version 300 es
+precision highp float;
+in vec2 vUv; uniform float uT; uniform vec2 uM; out vec4 fC;
+uvec2 pcg(uvec2 v){v=v*1664525u+1013904223u;v.x+=v.y*v.y*1664525u+1013904223u;v.y+=v.x*v.x*1664525u+1013904223u;v^=v>>16u;v.x+=v.y*v.y*1664525u+1013904223u;v.y+=v.x*v.x*1664525u+1013904223u;return v;}
+float hsh(vec2 p){uvec2 v=floatBitsToUint(p);v=pcg(v);return float(v.x^v.y)/4294967295.;}
+float gv(int i){if(i==0)return 0.;if(i==1)return .16078;if(i==2)return .39215;if(i==3)return .61568;if(i==4)return .81568;return 1.;}
+vec3 lin(float v){return vec3(pow(max(v,0.),2.2));}
+vec3 srgb(vec3 v){return pow(max(v,vec3(0.)),vec3(1./2.2));}
+vec3 cbrt(vec3 v){return sign(v)*pow(abs(v),vec3(1./3.));}
+vec3 oklab(vec3 a,vec3 b,float t){
+  const mat3 L=mat3(.41216,.21185,.0883,.53627,.68071,.28184,.05145,.1074,.63026);
+  const mat3 F=mat3(4.07672,-1.26814,-.00411,-3.30721,2.60933,-.70347,.23075,-.34113,1.70686);
+  vec3 l1=cbrt(L*a),l2=cbrt(L*b),l=mix(l1,l2,t);l*=1.+.025*t*(1.-t);return F*(l*l*l);}
+vec3 gc(float p){p=clamp(p,0.,1.);for(int i=0;i<5;i++){float a=float(i)*.2,b=float(i+1)*.2;if(p<=b||i==4){float t=clamp((p-a)/max(b-a,1e-5),0.,1.);return srgb(oklab(lin(gv(i)),lin(gv(i+1)),t));}}return vec3(1.);}
+vec2 rot2(vec2 v,float a){float s=sin(a),c=cos(a);return vec2(v.x*c-v.y*s,v.x*s+v.y*c);}
+const float PI=3.14159265359;
+void main(){
+  vec2 ctr=vec2(.5069686,.9874730)+mix(vec2(0.),(uM-.5),.77);
+  vec2 uv=rot2((vUv-ctr)/1.46,(.7506-.5)*2.*PI);
+  float p=length(uv)-uT*.0625; float cy=floor(p); bool rv=int(cy)%2==0;
+  float ap=rv?1.-fract(p):fract(p);
+  vec3 col=gc(ap); col+=(hsh(gl_FragCoord.xy)-.5)/255.;
+  fC=vec4(col,1.);}`;
 
-    <section id="collaborate">
-        <p class="section-label">[collaborate]</p>
-        <h2>Want to collaborate<br>with Nartfron?</h2>
-        <p>Need exposure? Branding? Visual content? Whether you're a brand, a musician, or a content creator — let's build something unforgettable together.</p>
-        <a href="#contact" class="cta-btn">Start Your Project</a>
-    </section>
+const FT = `#version 300 es
+precision highp float;
+in vec2 vUv; uniform sampler2D uGrad; uniform sampler2D uText; out vec4 fC;
+void main(){
+  vec4 g = texture(uGrad, vUv);
+  vec4 t = texture(uText, vec2(vUv.x, 1.-vUv.y));
+  fC = vec4(mix(g.rgb, t.rgb, t.a), 1.);
+}`;
 
-    <section id="connect">
-        <p class="section-label">[connect]</p>
-        <div class="connect-content">
-            <div class="connect-info">
-                <h3>Sounds &amp; Visuals</h3>
-                <p>A soundtrack for love and memory. Slow rhythms that wrap around the Black soul.</p>
-                <div class="connect-links">
-                    <a href="https://www.youtube.com/@Nartfron" target="_blank">YouTube ↗</a>
-                    <a href="https://www.instagram.com/nartfron/" target="_blank">Instagram ↗</a>
-                </div>
+const FS = `#version 300 es
+precision highp float; precision highp int;
+in vec2 vUv; uniform sampler2D uBg; uniform float uT; uniform vec2 uM; uniform vec2 uR; uniform float uRnd;
+out vec4 fC;
+const float PI=3.14159265359,PHI=1.61803398875;
+const vec3 RO=vec3(0.,0.,-4.25);
+mat3 rX(float a){float c=cos(a),s=sin(a);return mat3(1,0,0,0,c,-s,0,s,c);}
+mat3 rY(float a){float c=cos(a),s=sin(a);return mat3(c,0,s,0,1,0,-s,0,c);}
+mat3 rZ(float a){float c=cos(a),s=sin(a);return mat3(c,-s,0,s,c,0,0,0,1);}
+float bx(vec3 p,vec3 b){vec3 d=abs(p)-b;return length(max(d,0.))+min(max(d.x,max(d.y,d.z)),0.);}
+float mr(vec3 p){
+  p=vec3(-p.z,p.y,p.x);
+  vec3 b=vec3(.125,.75,.225);
+  float r=bx(p,b); r=min(r,bx(rZ(PI*.25)*p,b)); r=min(r,bx(rZ(PI*.5)*p,b)); r=min(r,bx(rZ(PI*.75)*p,b));
+  return r;}
+vec3 aP(vec3 p){
+  vec3 q=p/0.3*vec3(uR.x/uR.y,1.,1.)*(1.+uRnd+.01);
+  vec2 axis=vec2(-.5278-1.,.5)*2.;
+  q=rY(uT*.25)*rZ(.4167*2.*PI)*rY(axis.y*PI)*rX(axis.x*PI)*q;
+  return q.xzy;}
+float sdf(vec3 p){return max(1e-10,mr(aP(p))-(uRnd+.005))*.3;}
+vec3 nm(vec3 p,float e){vec2 h=vec2(1.,-1.)*e*.5;return normalize(h.xyy*mr(aP(p+h.xyy))+h.yyx*mr(aP(p+h.yyx))+h.yxy*mr(aP(p+h.yxy))+h.xxx*mr(aP(p+h.xxx)));}
+float ign(vec2 s){return fract(52.9829189*fract(dot(s,vec2(.06711056,.00583715))));}
+vec3 disp(vec3 rd,vec3 n){
+  float ib=1.035;vec3 dc=vec3(.03,.06,.1)*.288;vec3 col=vec3(0.);
+  for(int i=0;i<4;i++){float s=float(i)*.25+.125;vec3 d=s*dc;vec3 ior=1./(ib+d);vec3 rR=refract(rd,n,ior.r),rG=refract(rd,n,ior.g),rB=refract(rd,n,ior.b);col+=vec3(texture(uBg,vUv-rR.xy).r,texture(uBg,vUv-rG.xy).g,texture(uBg,vUv-rB.xy).b);}
+  return clamp(col*.25,0.,1.);}
+float frFn(vec3 e,vec3 n,float pw){float NdV=abs(dot(e,n));float ed=smoothstep(.2,-.2,fwidth(dot(e,n)));return pow(1.-NdV,pw)*mix(1.,ed*2.,.5);}
+uvec2 pcg(uvec2 v){v=v*1664525u+1013904223u;v.x+=v.y*v.y*1664525u+1013904223u;v.y+=v.x*v.x*1664525u+1013904223u;v^=v>>16u;v.x+=v.y*v.y*1664525u+1013904223u;v.y+=v.x*v.x*1664525u+1013904223u;return v;}
+float hsh(vec2 p){uvec2 v=floatBitsToUint(p);v=pcg(v);return float(v.x^v.y)/4294967295.;}
+vec4 march(vec3 ro,vec3 rd){
+  float ps=.005,j=ign(gl_FragCoord.xy),t=j,hit=0.;
+  vec3 ep=vec3(0.),en=vec3(0.);
+  for(int i=0;i<60;i++){
+    vec3 p=ro+rd*t;float d=sdf(p);float pg=float(i)/60.;
+    float st=d*mix(.5,2.,pg)*mix(1.,j+.5,1.-pg);
+    if(d>100.)break;if(d<ps){hit=1.;ep=p;en=nm(p,ps*1.6);break;}
+    t+=max(st,ps);if(t>100.)break;}
+  if(hit==0.)return texture(uBg,vUv);
+  vec3 col=disp(rd,en);
+  vec3 acc=vec3(.83529,.96862,.29803);
+  col+=frFn(rd,en,8.)*.5*acc;
+  vec3 ld=vec3(-.749,.751,-3.);
+  col+=pow(max(dot(en,normalize(ld+rd)),0.),64.01)*acc;
+  col+=(hsh(vUv)-.5)/255.;
+  return vec4(col,1.);}
+void main(){
+  vec2 uv=vUv;
+  vec2 ctr=vec2(.5)+mix(vec2(0.),(uM-.5),.77);
+  uv-=ctr;
+  vec3 rd=vec3(uv*tan(radians(20.)*.5),.5);
+  fC=march(RO,rd);}`;
+
+const FC = `#version 300 es
+precision highp float;
+in vec2 vUv; uniform sampler2D uTx; uniform float uT; uniform vec2 uR; uniform float uA; out vec4 fC;
+const float PI=3.14159265359;
+void main(){
+  float ar=uR.x/uR.y;
+  float ang=((0.2349+uT*.3125)*360.)*PI/180.;
+  vec2 rot=vec2(sin(ang),cos(ang)); vec4 col=texture(uTx,vUv);
+  float md=max(0.,1.-distance(vUv*vec2(ar,1.),vec2(.5*ar,.5))*4.);
+  vec2 ab=uA*rot*.03*md;
+  if(length(ab)>=.001){col.r=texture(uTx,vUv-ab).r;col.b=texture(uTx,vUv+ab).b;}
+  fC=col;}`;
+
+function mkSh(src,t){const s=gl.createShader(t);gl.shaderSource(s,src);gl.compileShader(s);if(!gl.getShaderParameter(s,gl.COMPILE_STATUS))console.error(gl.getShaderInfoLog(s));return s;}
+function mkPr(v,f){const p=gl.createProgram();gl.attachShader(p,mkSh(v,gl.VERTEX_SHADER));gl.attachShader(p,mkSh(f,gl.FRAGMENT_SHADER));gl.linkProgram(p);if(!gl.getProgramParameter(p,gl.LINK_STATUS))console.error(gl.getProgramInfoLog(p));return p;}
+function mkFB(w,h){const t=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,t);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA8,w,h,0,gl.RGBA,gl.UNSIGNED_BYTE,null);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);const f=gl.createFramebuffer();gl.bindFramebuffer(gl.FRAMEBUFFER,f);gl.framebufferTexture2D(gl.FRAMEBUFFER,gl.COLOR_ATTACHMENT0,gl.TEXTURE_2D,t,0);gl.bindFramebuffer(gl.FRAMEBUFFER,null);return{f,t};}
+
+const gP=mkPr(VS,FG), tP=mkPr(VS,FT), sP=mkPr(VS,FS), cP=mkPr(VS,FC);
+const qb=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,qb);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,-1,1,1,-1,1,1]),gl.STATIC_DRAW);
+function bq(p){const l=gl.getAttribLocation(p,'aPos');gl.bindBuffer(gl.ARRAY_BUFFER,qb);gl.enableVertexAttribArray(l);gl.vertexAttribPointer(l,2,gl.FLOAT,false,0,0);}
+const u=(p,n)=>gl.getUniformLocation(p,n);
+
+const gU={t:u(gP,'uT'),m:u(gP,'uM')};
+const tU={g:u(tP,'uGrad'),tx:u(tP,'uText')};
+const sU={bg:u(sP,'uBg'),t:u(sP,'uT'),m:u(sP,'uM'),r:u(sP,'uR'),rnd:u(sP,'uRnd')};
+const cU={tx:u(cP,'uTx'),t:u(cP,'uT'),r:u(cP,'uR'),a:u(cP,'uA')};
+
+let textTex = null;
+let fontsReady = false;
+
+function buildTextTex() {
+  const tc = document.createElement('canvas');
+  tc.width = W; tc.height = H;
+  const ctx = tc.getContext('2d');
+
+  const fs = W * 0.20038;
+  const lh = fs * 0.7827;
+  const ls = -0.023 * fs;
+
+  ctx.clearRect(0, 0, W, H);
+  ctx.fillStyle = '#000000';
+  ctx.textAlign = 'right';
+  ctx.textBaseline = 'middle';
+  ctx.font = `600 ${fs}px 'Inter Tight', sans-serif`;
+  if ('letterSpacing' in ctx) ctx.letterSpacing = `${ls}px`;
+
+  const rx = W * 0.5 + W * 0.8487 * 0.5;
+  const cy = H * 0.4933;
+
+  ctx.fillText('nartfron',   rx, cy - lh);
+  ctx.fillText('studio', rx, cy);
+  ctx.fillText('lofi art',   rx, cy + lh);
+
+  if (!textTex) textTex = gl.createTexture();
+  gl.bindTexture(gl.TEXTURE_2D, textTex);
+  gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, false);
+  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, tc);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+  gl.bindTexture(gl.TEXTURE_2D, null);
+}
+
+let W, H, fboGrad, fboComb, fboShape;
+
+function rsz() {
+  const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+  W = Math.max(1, Math.floor(canvas.clientWidth  * dpr));
+  H = Math.max(1, Math.floor(canvas.clientHeight * dpr));
+  canvas.width = W; canvas.height = H;
+  [fboGrad, fboComb, fboShape].forEach(f => { if(f){gl.deleteFramebuffer(f.f);gl.deleteTexture(f.t);} });
+  fboGrad  = mkFB(W, H);
+  fboComb  = mkFB(W, H);
+  fboShape = mkFB(W, H);
+  buildTextTex();
+}
+
+document.fonts.ready.then(() => { fontsReady = true; buildTextTex(); });
+
+let tm=0, lt=0;
+const mx={x:.5,y:.5,tx:.5,ty:.5};
+let scr=0, rnd=0, ca=.044;
+const lerp=(a,b,t)=>a+(b-a)*t;
+
+function frame(now) {
+  const dt = Math.min((now - lt) / 1000, .05);
+  lt = now; tm += dt;
+
+  mx.x = lerp(mx.x, mx.tx, .07);
+  mx.y = lerp(mx.y, mx.ty, .07);
+  rnd = lerp(rnd, scr, .09);
+  ca  = lerp(ca,  .044 + scr * .436, .06);
+
+  gl.viewport(0, 0, W, H);
+
+  gl.bindFramebuffer(gl.FRAMEBUFFER, fboGrad.f);
+  gl.useProgram(gP); bq(gP);
+  gl.uniform1f(gU.t, tm); gl.uniform2f(gU.m, mx.x, mx.y);
+  gl.drawArrays(gl.TRIANGLES, 0, 6);
+
+  gl.bindFramebuffer(gl.FRAMEBUFFER, fboComb.f);
+  gl.useProgram(tP); bq(tP);
+  gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, fboGrad.t);
+  gl.activeTexture(gl.TEXTURE1); gl.bindTexture(gl.TEXTURE_2D, textTex);
+  gl.uniform1i(tU.g, 0); gl.uniform1i(tU.tx, 1);
+  gl.drawArrays(gl.TRIANGLES, 0, 6);
+
+  gl.bindFramebuffer(gl.FRAMEBUFFER, fboShape.f);
+  gl.useProgram(sP); bq(sP);
+  gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, fboComb.t);
+  gl.uniform1i(sU.bg, 0); gl.uniform1f(sU.t, tm);
+  gl.uniform2f(sU.m, mx.x, mx.y); gl.uniform2f(sU.r, W, H);
+  gl.uniform1f(sU.rnd, rnd);
+  gl.drawArrays(gl.TRIANGLES, 0, 6);
+
+  gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+  gl.useProgram(cP); bq(cP);
+  gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, fboShape.t);
+  gl.uniform1i(cU.tx, 0); gl.uniform1f(cU.t, tm);
+  gl.uniform2f(cU.r, W, H); gl.uniform1f(cU.a, ca);
+  gl.drawArrays(gl.TRIANGLES, 0, 6);
+
+  requestAnimationFrame(frame);
+}
+
+window.addEventListener('mousemove', e => {
+  const r = canvas.getBoundingClientRect();
+  mx.tx = (e.clientX - r.left) / r.width;
+  mx.ty = 1. - (e.clientY - r.top) / r.height;
+});
+window.addEventListener('touchmove', e => {
+  const t = e.touches[0], r = canvas.getBoundingClientRect();
+  mx.tx = (t.clientX - r.left) / r.width;
+  mx.ty = 1. - (t.clientY - r.top) / r.height;
+}, { passive: true });
+window.addEventListener('scroll', () => {
+  const r = document.getElementById('scene').getBoundingClientRect();
+  scr = Math.max(0, Math.min(1, -r.top / (r.height * .23)));
+}, { passive: true });
+window.addEventListener('resize', rsz);
+
+rsz();
+requestAnimationFrame(t0 => { lt = t0; requestAnimationFrame(frame); });
+</script>
+
+<!-- ============================================================
+     SECTION: WORK PROCESS
+     ============================================================ -->
+<section>
+    <span class="section-tag">★ methodology</span>
+    <h2>Our <span class="highlight">process</span></h2>
+    <div class="process-circle">
+        <div class="process-step"><div class="num">1</div><h4>Discovery</h4><p>We identify your essence and audience.</p></div>
+        <div class="process-step"><div class="num">2</div><h4>Direction</h4><p>We define the Lofi visual universe.</p></div>
+        <div class="process-step"><div class="num">3</div><h4>Design</h4><p>We create the identity and illustrations.</p></div>
+        <div class="process-step"><div class="num">4</div><h4>Animation</h4><p>We bring pieces to life with motion.</p></div>
+        <div class="process-step"><div class="num">5</div><h4>Delivery</h4><p>We deliver assets optimized for social media.</p></div>
+        <div class="process-step"><div class="num">6</div><h4>Support</h4><p>Post-launch support and adjustments.</p></div>
+    </div>
+</section>
+
+<!-- ============================================================
+     SECTION: ABOUT US
+     ============================================================ -->
+<section>
+    <span class="section-tag">★ studio</span>
+    <div class="grid-2">
+        <div>
+            <h2>The essence of <span class="highlight">Nartfron</span></h2>
+            <p>We are a creative direction studio specialized in 2D Lofi illustration and Afro culture. We create images that connect with young, urban audiences through neon, night, and cinematic romanticism.</p>
+            <p style="margin-top:12px;">Our team is made up of illustrators, animators and creative directors passionate about visual aesthetics and emotional storytelling.</p>
+            <div style="margin-top:20px;">
+                <span style="display:inline-block; background:rgba(255,20,147,0.1); padding:4px 16px; border-radius:30px; color:#FF1493; font-size:0.8rem; margin-right:8px;">+120K followers</span>
+                <span style="display:inline-block; background:rgba(255,20,147,0.1); padding:4px 16px; border-radius:30px; color:#FF1493; font-size:0.8rem;">1-6M views/Reel</span>
             </div>
-            <div class="spotify-embed">
-                <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/3G40MY61eZ8fhPr1iAw5dC?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     SECTION: CONTACT WITH COMPLETE FORM
+     ============================================================ -->
+<section id="contact">
+    <span class="section-tag">★ contact</span>
+    <h2>Have a project <span class="highlight">in mind?</span></h2>
+    <p class="subtitle">Tell us your idea and we'll create a visual identity that connects with your audience.</p>
+
+    <form action="https://formspree.io/f/xjgdnzba" method="POST">
+        <!-- Name -->
+        <div class="form-group">
+            <label>Name</label>
+            <input type="text" name="name" placeholder="Your name" required>
+        </div>
+
+        <!-- Email -->
+        <div class="form-group">
+            <label>Email</label>
+            <input type="email" name="email" placeholder="you@email.com" required>
+        </div>
+
+        <!-- Instagram -->
+        <div class="form-group">
+            <label>Instagram</label>
+            <input type="text" name="instagram" placeholder="@yourhandle">
+        </div>
+
+        <!-- Profession (select) -->
+        <div class="form-group">
+            <label>What's your profession?</label>
+            <select name="profession" required>
+                <option value="" disabled selected>Select your profession</option>
+                <option value="musician">Musician</option>
+                <option value="writer">Writer</option>
+                <option value="producer">Producer</option>
+                <option value="model">Model</option>
+                <option value="brand">Brand / Business</option>
+                <option value="other">Other</option>
+            </select>
+        </div>
+
+        <!-- Budget in USD -->
+        <div class="form-group">
+            <label>Estimated budget (USD)</label>
+            <select name="budget" required>
+                <option value="" disabled selected>Select your budget</option>
+                <option value="0-250">&lt; 250 USD</option>
+                <option value="250-500">250 - 500 USD</option>
+                <option value="500-1000">500 - 1,000 USD</option>
+                <option value="1000-1500">1,000 - 1,500 USD</option>
+                <option value="1500-2000">1,500 - 2,000 USD</option>
+            </select>
+        </div>
+
+        <!-- Message -->
+        <div class="form-group">
+            <label>Message</label>
+            <textarea name="message" rows="4" placeholder="Tell us about your project..." required></textarea>
+        </div>
+
+        <button type="submit" class="btn-submit">Send Message</button>
+    </form>
+</section>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer>
+    <div class="footer-grid">
+        <div>
+            <h4 style="font-family:'Inter Tight',sans-serif; font-size:1.4rem; color:#FF1493;">NARTFRON</h4>
+            <p style="font-size:0.85rem; color:rgba(255,255,255,0.3); max-width:260px;">2D Lofi Illustration · Afro Culture · Neon &amp; Cinematic Romanticism.</p>
+            <div class="social-links">
+                <a href="https://www.instagram.com/nartfron" target="_blank">📸</a>
+                <a href="https://nartfron.com" target="_blank">🌐</a>
             </div>
         </div>
-    </section>
-
-    <section id="personal">
-        <p class="section-label">[personal]</p>
-        <div class="personal-content">
-            <div class="personal-info">
-                <h2>Your portrait,<br><span>animated.</span></h2>
-                <p>A custom illustration of you, in the signature Nartfron style. Neon-lit, rain-kissed, deeply personal. Select your option below and checkout securely via Gumroad.</p>
-                
-                <a class="gumroad-button gumroad-btn" href="https://nartistry.gumroad.com/l/iuwjcd">Get yours now</a>
-            </div>
+        <div>
+            <h5>Links</h5>
+            <a href="#">Home</a>
+            <a href="#about">About Nartfron</a>
+            <a href="#contact">Contact</a>
+            <a href="#">Privacy Policy</a>
         </div>
-    </section>
+        <div>
+            <h5>Services</h5>
+            <a href="#">2D Illustration</a>
+            <a href="#">Video Reels</a>
+            <a href="#">Branding</a>
+            <a href="#">Social Media Kit</a>
+        </div>
+        <div>
+            <h5>Contact</h5>
+            <p style="font-size:0.85rem; color:rgba(255,255,255,0.3);">nartcontactme@gmail.com</p>
+            <p style="font-size:0.85rem; color:rgba(255,255,255,0.3);">@nartfron</p>
+            <p style="font-size:0.85rem; color:rgba(255,255,255,0.3);">nartfron.com</p>
+        </div>
+    </div>
+    <div class="copy">© 2026 Nartfron Studio. All rights reserved.</div>
+</footer>
 
-    <section id="contact">
-        <p class="section-label">[contact]</p>
-        <h2 style="font-size:2.8rem;font-weight:600;letter-spacing:-0.04em;">Inquiries.</h2>
-        <form action="https://formspree.io/f/xjgdnzba" method="POST">
-            <div class="form-group">
-                <label>I am a...</label>
-                <select name="client_type" required>
-                    <option value="" disabled selected>Select your profile</option>
-                    <option value="brand">Brand / Business</option>
-                    <option value="musician">Musician / Artist</option>
-                    <option value="creator">Content Creator</option>
-                    <option value="other">Other</option>
-                </select>
-            </div>
-            <div class="form-group"><label>Name</label><input type="text" name="name" required></div>
-            <div class="form-group"><label>Email</label><input type="email" name="email" required></div>
-            <div class="form-group"><label>Instagram</label><input type="text" name="instagram"></div>
-            <div class="form-group"><label>What would you like?</label><textarea name="message" rows="4" required placeholder="Tell me about your project..."></textarea></div>
-            <button type="submit" class="btn">Send Message</button>
-        </form>
-    </section>
-
-    <footer>
-        <a href="https://www.instagram.com/nartfron/" target="_blank" class="social-link"><span class="inner"><span>Instagram</span><br><span class="clone">Instagram</span></span></a>
-        <a href="https://www.youtube.com/@Nartfron" target="_blank" class="social-link"><span class="inner"><span>YouTube</span><br><span class="clone">YouTube</span></span></a>
-        <a href="https://open.spotify.com/playlist/3G40MY61eZ8fhPr1iAw5dC" target="_blank" class="social-link"><span class="inner"><span>Spotify</span><br><span class="clone">Spotify</span></span></a>
-        <span style="color:#555;font-size:0.7rem;">© 2025 Nartfron.</span>
-    </footer>
-
-    <script>
-        const cursor = document.getElementById('cursor');
-        document.addEventListener('mousemove', (e) => {
-            cursor.style.left = e.clientX + 'px';
-            cursor.style.top = e.clientY + 'px';
+<script>
+    // Smooth scroll for internal links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth' });
+            }
         });
-        document.querySelectorAll('a, button, .nav-link, .personal-visual').forEach(el => {
-            el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
-            el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
-        });
+    });
+</script>
 
-        const header = document.getElementById('header');
-        window.addEventListener('scroll', () => header.classList.toggle('scrolled', window.scrollY > 50));
-
-        const sections = document.querySelectorAll('section:not(#hero)');
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
-        }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
-        sections.forEach(section => observer.observe(section));
-
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth' });
-                }
-            });
-        });
-    </script>
 </body>
 </html>
