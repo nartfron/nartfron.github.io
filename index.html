@@ -93,7 +93,7 @@
             letter-spacing: 0.35em;
             color: #888;
             margin-top: 2rem;
-            margin-bottom: 3rem;
+            margin-bottom: 3.5rem;
             text-transform: uppercase;
         }
 
@@ -105,16 +105,14 @@
             justify-content: center;
             flex-wrap: wrap;
         }
-        .project-btn, .story-btn {
+        
+        .btn-primary, .btn-outline {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            background: transparent;
-            color: var(--txt);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 1.1rem 3rem;
+            padding: 1.1rem 2.5rem;
             text-decoration: none;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             font-weight: 500;
             letter-spacing: 0.15em;
             text-transform: uppercase;
@@ -123,16 +121,30 @@
             transition: all 0.4s var(--ease);
             font-family: var(--font);
         }
-        .project-btn:hover, .story-btn:hover {
+
+        /* Botón principal (Marrón) */
+        .btn-primary {
             background: var(--accent);
-            border-color: var(--accent);
             color: #fff;
+            border: 1px solid var(--accent);
+        }
+        .btn-primary:hover {
+            background: #a06c3a;
+            border-color: #a06c3a;
             box-shadow: 0 12px 30px var(--accent-glow);
             transform: translateY(-2px);
         }
-        .story-btn {
-            border: 1px solid var(--accent);
-            color: var(--accent);
+
+        /* Botones secundarios (Transparentes) */
+        .btn-outline {
+            background: transparent;
+            color: var(--txt);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .btn-outline:hover {
+            border-color: var(--txt);
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateY(-2px);
         }
 
         /* SECCIÓN DE LA GALERÍA */
@@ -192,7 +204,7 @@
             letter-spacing: 0.1em;
         }
 
-        /* SECCIÓN: NUESTRA HISTORIA (AL FINAL) */
+        /* SECCIÓN: NUESTRA HISTORIA */
         #our-story {
             padding: 10rem 3rem;
             max-width: 900px;
@@ -327,7 +339,7 @@
             .cursor { display: none; } body { cursor: auto; }
             footer { flex-direction: column; gap: 1rem; padding: 2rem; }
             .hero-actions { flex-direction: column; width: 100%; }
-            .project-btn, .story-btn { width: 100%; }
+            .btn-primary, .btn-outline { width: 100%; }
         }
     </style>
 </head>
@@ -351,10 +363,11 @@
         <h1 class="logo-text">Nartfron<span>.</span></h1>
         <p class="hero-subtitle">VISUALS AND CULTURE</p>
         
-        <!-- NUEVOS BOTONES -->
+        <!-- LOS 3 BOTONES -->
         <div class="hero-actions">
-            <a href="#contact" class="project-btn">Work With Us</a>
-            <a href="#our-story" class="story-btn">Our Story</a>
+            <a href="#contact" class="btn-primary">Work With Us</a>
+            <a href="#gallery" class="btn-outline">Gallery</a>
+            <a href="#our-story" class="btn-outline">Our Story</a>
         </div>
     </section>
 
@@ -364,78 +377,52 @@
             <!-- ITEM 1 -->
             <a href="#" class="masonry-item">
                 <img src="https://i.imgur.com/Qfl7IZo.png" alt="Work 01" loading="lazy">
-                <div class="masonry-meta">
-                    <span class="masonry-index">01</span>
-                </div>
+                <div class="masonry-meta"><span class="masonry-index">01</span></div>
             </a>
-
             <!-- ITEM 2 -->
             <a href="#" class="masonry-item">
                 <img src="https://i.imgur.com/xoZ1emI.png" alt="Work 02" loading="lazy">
-                <div class="masonry-meta">
-                    <span class="masonry-index">02</span>
-                </div>
+                <div class="masonry-meta"><span class="masonry-index">02</span></div>
             </a>
-
             <!-- ITEM 3 -->
             <a href="#" class="masonry-item">
                 <img src="https://i.imgur.com/RDncYvs.png" alt="Work 03" loading="lazy">
-                <div class="masonry-meta">
-                    <span class="masonry-index">03</span>
-                </div>
+                <div class="masonry-meta"><span class="masonry-index">03</span></div>
             </a>
-
             <!-- ITEM 4 -->
             <a href="#" class="masonry-item">
                 <img src="https://i.imgur.com/BmVjkXS.png" alt="Work 04" loading="lazy">
-                <div class="masonry-meta">
-                    <span class="masonry-index">04</span>
-                </div>
+                <div class="masonry-meta"><span class="masonry-index">04</span></div>
             </a>
-
             <!-- ITEM 5 -->
             <a href="#" class="masonry-item">
                 <img src="https://i.imgur.com/wt9ODqV.png" alt="Work 05" loading="lazy">
-                <div class="masonry-meta">
-                    <span class="masonry-index">05</span>
-                </div>
+                <div class="masonry-meta"><span class="masonry-index">05</span></div>
             </a>
-
             <!-- ITEM 6 -->
             <a href="#" class="masonry-item">
                 <img src="https://i.imgur.com/UTTuGEt.png" alt="Work 06" loading="lazy">
-                <div class="masonry-meta">
-                    <span class="masonry-index">06</span>
-                </div>
+                <div class="masonry-meta"><span class="masonry-index">06</span></div>
             </a>
-
             <!-- ITEM 7 -->
             <a href="#" class="masonry-item">
                 <img src="https://i.imgur.com/pJEAUBN.png" alt="Work 07" loading="lazy">
-                <div class="masonry-meta">
-                    <span class="masonry-index">07</span>
-                </div>
+                <div class="masonry-meta"><span class="masonry-index">07</span></div>
             </a>
-
             <!-- ITEM 8 -->
             <a href="#" class="masonry-item">
                 <img src="https://i.imgur.com/YT1uiKp.png" alt="Work 08" loading="lazy">
-                <div class="masonry-meta">
-                    <span class="masonry-index">08</span>
-                </div>
+                <div class="masonry-meta"><span class="masonry-index">08</span></div>
             </a>
-
             <!-- ITEM 9 -->
             <a href="#" class="masonry-item">
                 <img src="https://i.imgur.com/VRmxz4q.png" alt="Work 09" loading="lazy">
-                <div class="masonry-meta">
-                    <span class="masonry-index">09</span>
-                </div>
+                <div class="masonry-meta"><span class="masonry-index">09</span></div>
             </a>
         </div>
     </section>
 
-    <!-- 3. NUESTRA HISTORIA (AL FINAL) -->
+    <!-- 3. NUESTRA HISTORIA -->
     <section id="our-story">
         <p class="story-label">[our story]</p>
         <h2 class="story-title">More than a studio.<br>A movement.</h2>
@@ -499,7 +486,7 @@
             cursor.style.left = e.clientX + 'px';
             cursor.style.top = e.clientY + 'px';
         });
-        document.querySelectorAll('a, button, .masonry-item, .nav-link, .project-btn, .story-btn').forEach(el => {
+        document.querySelectorAll('a, button, .masonry-item, .nav-link, .btn-primary, .btn-outline').forEach(el => {
             el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
             el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
         });
