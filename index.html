@@ -14,8 +14,8 @@
             --txt: #f0f0f0;
             --txt-secondary: #999999;
             --border: rgba(255,255,255,0.06);
-            --accent: #ff69b4;
-            --accent-glow: rgba(255,105,180,0.2);
+            --accent: #8B5A2B; /* Marrón oscuro */
+            --accent-glow: rgba(139, 90, 43, 0.3);
             --font: 'Inter', sans-serif;
             --font-serif: 'Cormorant Garamond', serif;
             --font-mono: 'DM Mono', monospace;
@@ -32,88 +32,49 @@
         }
 
         .noise-overlay {
-            position: fixed;
-            inset: 0;
-            z-index: 9998;
-            pointer-events: none;
-            opacity: 0.04;
+            position: fixed; inset: 0; z-index: 9998; pointer-events: none; opacity: 0.04;
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='1'/%3E%3C/svg%3E");
-            background-repeat: repeat;
-            background-size: 256px 256px;
+            background-repeat: repeat; background-size: 256px 256px;
         }
 
         .cursor {
-            position: fixed;
-            width: 8px;
-            height: 8px;
-            background: var(--accent);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 9999;
-            mix-blend-mode: difference;
+            position: fixed; width: 8px; height: 8px; background: var(--accent); border-radius: 50%;
+            pointer-events: none; z-index: 9999; mix-blend-mode: difference;
             transition: transform 0.1s ease-out, width 0.3s, height 0.3s, border-radius 0.3s;
             transform: translate(-50%, -50%);
         }
         .cursor.hover {
-            width: 40px;
-            height: 40px;
-            background: transparent;
-            border: 1px solid var(--accent);
-            mix-blend-mode: normal;
+            width: 40px; height: 40px; background: transparent; border: 1px solid var(--accent); mix-blend-mode: normal;
         }
 
+        /* HEADER */
         header {
-            position: fixed;
-            top: 0; left: 0; right: 0;
-            z-index: 100;
-            padding: 2rem 3rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            mix-blend-mode: difference;
-            transition: backdrop-filter 0.6s;
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            padding: 2rem 3rem; display: flex; justify-content: space-between; align-items: flex-start;
+            mix-blend-mode: difference; pointer-events: none;
         }
-        header.scrolled { backdrop-filter: blur(20px); }
+        header a { pointer-events: auto; }
         .nav-group { display: flex; flex-direction: column; gap: 0.2rem; }
         .nav-link {
-            color: #fff;
-            text-decoration: none;
-            font-family: var(--font);
-            font-size: 0.95rem;
-            font-weight: 300;
-            letter-spacing: 0.02em;
-            text-transform: uppercase;
-            padding: 0.1rem 0;
-            transition: color 0.4s;
-            overflow: hidden;
-            height: 24px;
-            display: block;
-            cursor: pointer;
-            background: none;
-            border: none;
+            color: #fff; text-decoration: none; font-family: var(--font); font-size: 0.95rem; font-weight: 300;
+            letter-spacing: 0.02em; text-transform: uppercase; padding: 0.1rem 0;
+            transition: color 0.4s; overflow: hidden; height: 24px; display: block;
         }
-        .nav-link:hover { color: #ddd; }
         .nav-link .inner { display: block; transition: transform 0.6s var(--ease); }
         .nav-link:hover .inner { transform: translateY(-24px); }
         .nav-link .clone { color: var(--accent); }
         .nav-link.year { color: #777; font-size: 0.65rem; margin-top: 0.5rem; letter-spacing: 0.05em; }
-        .nav-link.year:hover { color: #777; }
-        .nav-link.year .inner { transition: none; }
-        .nav-link.year:hover .inner { transform: none; }
 
-        section {
+        /* HERO */
+        #hero {
             min-height: 100vh;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 8rem 3rem;
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 1s var(--ease), transform 1s var(--ease);
+            text-align: center;
+            padding: 0 3rem;
         }
-        section.visible { opacity: 1; transform: translateY(0); }
-
-        #hero { flex-direction: column; text-align: center; }
         .logo-text {
             font-family: var(--font);
             font-size: clamp(4rem, 10vw, 7rem);
@@ -121,156 +82,183 @@
             letter-spacing: -0.05em;
             color: #f5f5f5;
             line-height: 0.9;
-            text-decoration: none;
             transition: text-shadow 0.6s;
         }
         .logo-text:hover { text-shadow: 0 0 80px var(--accent-glow); }
         .logo-text span { color: var(--accent); }
         .hero-subtitle {
-            font-family: var(--font);
+            font-family: var(--font-mono);
             font-size: 0.7rem;
             font-weight: 300;
             letter-spacing: 0.35em;
             color: #888;
             margin-top: 2rem;
+            margin-bottom: 3rem;
             text-transform: uppercase;
         }
 
-        #manifesto {
-            flex-direction: column;
-            text-align: left;
-            align-items: flex-start;
-            max-width: 720px;
-            margin: 0 auto;
+        /* BOTONES DE ACCIÓN */
+        .hero-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
         }
-        .section-label {
+        .project-btn, .story-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+            color: var(--txt);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 1.1rem 3rem;
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            border-radius: 100px;
+            cursor: pointer;
+            transition: all 0.4s var(--ease);
+            font-family: var(--font);
+        }
+        .project-btn:hover, .story-btn:hover {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+            box-shadow: 0 12px 30px var(--accent-glow);
+            transform: translateY(-2px);
+        }
+        .story-btn {
+            border: 1px solid var(--accent);
+            color: var(--accent);
+        }
+
+        /* SECCIÓN DE LA GALERÍA */
+        #gallery {
+            padding: 4rem 3rem 4rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            border-top: 1px solid var(--border);
+        }
+
+        /* GRID MASONRY */
+        .masonry-grid {
+            column-count: 3;
+            column-gap: 1.5rem;
+        }
+
+        .masonry-item {
+            break-inside: avoid;
+            margin-bottom: 1.5rem;
+            display: block;
+            position: relative;
+            text-decoration: none;
+            color: var(--txt);
+            cursor: pointer;
+            border-radius: 8px;
+            overflow: hidden;
+            background: var(--surface);
+        }
+
+        .masonry-item img {
+            width: 100%;
+            display: block;
+            transition: filter 0.4s var(--ease), transform 0.4s var(--ease);
+            object-fit: cover;
+            height: auto;
+        }
+
+        .masonry-meta {
+            position: absolute;
+            inset: 0;
+            background: rgba(6, 6, 6, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.4s var(--ease);
+            backdrop-filter: blur(2px);
+        }
+
+        .masonry-item:hover .masonry-meta { opacity: 1; }
+        .masonry-item:hover img { transform: scale(1.05); filter: blur(2px); }
+
+        .masonry-index {
+            font-family: var(--font-mono);
+            font-size: 2rem;
+            color: var(--accent);
+            letter-spacing: 0.1em;
+        }
+
+        /* SECCIÓN: NUESTRA HISTORIA (AL FINAL) */
+        #our-story {
+            padding: 10rem 3rem;
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+            border-top: 1px solid var(--border);
+        }
+        .story-label {
             font-family: var(--font-mono);
             font-size: 0.6rem;
             text-transform: uppercase;
             letter-spacing: 0.15em;
             color: var(--accent);
             margin-bottom: 2.5rem;
-            opacity: 0.7;
+            opacity: 0.8;
         }
-        #manifesto h2 {
+        .story-title {
             font-family: var(--font-serif);
-            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            font-size: clamp(2.5rem, 5vw, 4rem);
             font-weight: 400;
-            letter-spacing: -0.02em;
-            line-height: 1.1;
-            margin-bottom: 2.5rem;
             font-style: italic;
+            letter-spacing: -0.02em;
+            margin-bottom: 3rem;
+            line-height: 1.1;
         }
-        #manifesto p {
-            font-size: 1.15rem;
+        .story-text {
+            font-size: 1.2rem;
             color: var(--txt-secondary);
             line-height: 1.8;
-            max-width: 620px;
             font-weight: 300;
+            max-width: 700px;
+            margin: 0 auto 2rem auto;
         }
-
-        #collaborate {
-            flex-direction: column;
-            text-align: center;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        #collaborate h2 {
-            font-family: var(--font-serif);
-            font-size: clamp(2.5rem, 5vw, 3.5rem);
-            font-weight: 400;
-            letter-spacing: -0.02em;
-            line-height: 1.2;
-            margin-bottom: 2rem;
-            font-style: italic;
-        }
-        #collaborate p {
-            font-size: 1.1rem;
-            color: var(--txt-secondary);
-            line-height: 1.7;
-            margin-bottom: 3rem;
-        }
-        .cta-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.6rem;
-            background: var(--accent);
-            color: #000;
-            padding: 1rem 2.5rem;
-            text-decoration: none;
-            font-size: 0.8rem;
-            font-weight: 600;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            border: none;
-            border-radius: 100px;
-            cursor: pointer;
-            transition: all 0.4s;
-            font-family: var(--font);
-        }
-        .cta-btn:hover {
-            background: #ff8cc6;
-            box-shadow: 0 12px 30px var(--accent-glow);
-            transform: scale(1.03);
-        }
-
-        #connect {
-            flex-direction: column;
-            align-items: flex-start;
-            max-width: 800px;
-            margin: 0 auto;
-            width: 100%;
-        }
-        .connect-content {
-            display: flex;
-            gap: 4rem;
-            align-items: flex-start;
-            width: 100%;
-            flex-wrap: wrap;
-        }
-        .connect-info {
-            flex: 1;
-            min-width: 250px;
-        }
-        .connect-info h3 {
-            font-family: var(--font-serif);
-            font-size: 2rem;
-            font-weight: 400;
-            font-style: italic;
-            margin-bottom: 1rem;
-        }
-        .connect-info p {
-            color: var(--txt-secondary);
-            margin-bottom: 2rem;
-            line-height: 1.6;
-        }
-        .connect-links {
-            display: flex;
-            gap: 2rem;
-            margin-top: 1rem;
-        }
-        .connect-links a {
+        .story-highlight {
             color: var(--txt);
-            text-decoration: none;
-            font-family: var(--font-mono);
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            transition: color 0.3s;
-            border-bottom: 1px solid var(--border);
-            padding-bottom: 0.3rem;
-        }
-        .connect-links a:hover { color: var(--accent); border-color: var(--accent); }
-        .spotify-embed {
-            flex: 0 0 300px;
-            border-radius: 12px;
-            overflow: hidden;
-            border: 1px solid var(--border);
+            font-weight: 400;
         }
 
-        #contact { flex-direction: column; align-items: flex-start; max-width: 520px; margin: 0 auto; }
-        #contact form { width: 100%; margin-top: 2.5rem; }
-        .form-group { margin-bottom: 2.5rem; }
+        /* CONTACTO */
+        #contact {
+            padding: 8rem 3rem 6rem;
+            max-width: 520px;
+            margin: 0 auto;
+            border-top: 1px solid var(--border);
+        }
+
+        .contact-label {
+            font-family: var(--font-mono);
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--accent);
+            margin-bottom: 2rem;
+            opacity: 0.8;
+        }
+
+        .contact-title {
+            font-family: var(--font);
+            font-size: 2.8rem;
+            font-weight: 600;
+            letter-spacing: -0.04em;
+            margin-bottom: 2.5rem;
+        }
+
+        #contact form { width: 100%; }
+        .form-group { margin-bottom: 2rem; }
         .form-group label {
             display: block;
             font-family: var(--font-mono);
@@ -308,6 +296,7 @@
         .form-group input:focus,
         .form-group select:focus,
         .form-group textarea:focus { border-color: var(--accent); }
+        
         .btn {
             display: inline-flex; align-items: center; gap: 0.6rem;
             background: var(--txt); color: var(--bg); padding: 0.9rem 2.2rem;
@@ -315,31 +304,30 @@
             text-transform: uppercase; border: none; border-radius: 100px; cursor: pointer;
             transition: all 0.4s; font-family: var(--font);
         }
-        .btn:hover { background: var(--accent); box-shadow: 0 12px 30px var(--accent-glow); transform: scale(1.03); }
+        .btn:hover { background: var(--accent); color: #fff; box-shadow: 0 12px 30px var(--accent-glow); transform: scale(1.03); }
 
+        /* FOOTER */
         footer {
             padding: 2.5rem 3rem; display: flex; justify-content: space-between; align-items: center;
             border-top: 1px solid var(--border); max-width: 1100px; margin: 0 auto; width: 100%;
+            font-family: var(--font-mono); font-size: 0.7rem; color: var(--txt-secondary);
+            text-transform: uppercase; letter-spacing: 0.05em;
         }
-        footer .social-link {
-            color: var(--txt-secondary); text-decoration: none; font-family: var(--font);
-            font-size: 0.85rem; font-weight: 300; text-transform: uppercase; letter-spacing: 0.03em;
-            transition: color 0.4s; overflow: hidden; height: 22px; display: block;
+
+        /* RESPONSIVE */
+        @media (max-width: 1024px) {
+            .masonry-grid { column-count: 2; }
         }
-        footer .social-link:hover { color: var(--accent); }
-        footer .social-link .inner { display: block; transition: transform 0.6s var(--ease); }
-        footer .social-link:hover .inner { transform: translateY(-22px); }
-        footer .social-link .clone { color: var(--accent); }
 
         @media (max-width: 768px) {
             header { padding: 1.5rem 2rem; }
-            section { padding: 5rem 2rem; }
-            .nav-link { font-size: 0.8rem; height: 20px; }
-            .nav-link:hover .inner { transform: translateY(-20px); }
-            footer { flex-direction: column; gap: 1.2rem; padding: 2rem; }
+            #hero { padding: 0 1.5rem; }
+            #gallery, #our-story, #contact { padding: 6rem 1.5rem 4rem; }
+            .masonry-grid { column-count: 1; }
             .cursor { display: none; } body { cursor: auto; }
-            .connect-content { flex-direction: column; gap: 2rem; }
-            .spotify-embed { width: 100%; }
+            footer { flex-direction: column; gap: 1rem; padding: 2rem; }
+            .hero-actions { flex-direction: column; width: 100%; }
+            .project-btn, .story-btn { width: 100%; }
         }
     </style>
 </head>
@@ -348,55 +336,127 @@
     <div class="noise-overlay"></div>
     <div class="cursor" id="cursor"></div>
 
-    <header id="header">
+    <header>
         <div class="nav-group">
-            <a href="#manifesto" class="nav-link"><span class="inner"><span>Manifesto</span><br><span class="clone">Manifesto</span></span></a>
-            <a href="#collaborate" class="nav-link"><span class="inner"><span>Collaborate</span><br><span class="clone">Collaborate</span></span></a>
-            <span class="nav-link year"><span class="inner"><span>2025</span></span></span>
+            <a href="#" class="nav-link"><span class="inner"><span>Back</span><br><span class="clone">Back</span></span></a>
+            <span class="nav-link year">2025</span>
         </div>
         <div class="nav-group" style="text-align:right;">
             <a href="#contact" class="nav-link"><span class="inner"><span>Contact</span><br><span class="clone">Contact</span></span></a>
         </div>
     </header>
 
-    <section id="hero" class="visible">
+    <!-- 1. NARTFRON INICIO -->
+    <section id="hero">
         <h1 class="logo-text">Nartfron<span>.</span></h1>
         <p class="hero-subtitle">VISUALS AND CULTURE</p>
-    </section>
-
-    <section id="manifesto">
-        <p class="section-label">[manifesto]</p>
-        <h2>We romanticize the pause.</h2>
-        <p>Love, in its most radical form, is not shouted. It is held. This space is an altar dedicated to Black intimacy: to care, to rest, and to the beauty of existing without haste. Our bodies have been designed for struggle, but they deserve rest. Like the rain that washes the city, like the neon that tints the night in pink and purple, love flourishes in stillness.</p>
-    </section>
-
-    <section id="collaborate">
-        <p class="section-label">[collaborate]</p>
-        <h2>Want to collaborate<br>with Nartfron?</h2>
-        <p>Need exposure? Branding? Visual content? Whether you're a brand, a musician, or a content creator — let's build something unforgettable together.</p>
-        <a href="#contact" class="cta-btn">Start Your Project</a>
-    </section>
-
-    <section id="connect">
-        <p class="section-label">[connect]</p>
-        <div class="connect-content">
-            <div class="connect-info">
-                <h3>Sounds &amp; Visuals</h3>
-                <p>A soundtrack for love and memory. Slow rhythms that wrap around the Black soul.</p>
-                <div class="connect-links">
-                    <a href="https://www.youtube.com/@Nartfron" target="_blank">YouTube ↗</a>
-                    <a href="https://www.instagram.com/nartfron/" target="_blank">Instagram ↗</a>
-                </div>
-            </div>
-            <div class="spotify-embed">
-                <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/3G40MY61eZ8fhPr1iAw5dC?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-            </div>
+        
+        <!-- NUEVOS BOTONES -->
+        <div class="hero-actions">
+            <a href="#contact" class="project-btn">Work With Us</a>
+            <a href="#our-story" class="story-btn">Our Story</a>
         </div>
     </section>
 
+    <!-- 2. GALERÍA MASONRY -->
+    <section id="gallery">
+        <div class="masonry-grid">
+            <!-- ITEM 1 -->
+            <a href="#" class="masonry-item">
+                <img src="https://i.imgur.com/Qfl7IZo.png" alt="Work 01" loading="lazy">
+                <div class="masonry-meta">
+                    <span class="masonry-index">01</span>
+                </div>
+            </a>
+
+            <!-- ITEM 2 -->
+            <a href="#" class="masonry-item">
+                <img src="https://i.imgur.com/xoZ1emI.png" alt="Work 02" loading="lazy">
+                <div class="masonry-meta">
+                    <span class="masonry-index">02</span>
+                </div>
+            </a>
+
+            <!-- ITEM 3 -->
+            <a href="#" class="masonry-item">
+                <img src="https://i.imgur.com/RDncYvs.png" alt="Work 03" loading="lazy">
+                <div class="masonry-meta">
+                    <span class="masonry-index">03</span>
+                </div>
+            </a>
+
+            <!-- ITEM 4 -->
+            <a href="#" class="masonry-item">
+                <img src="https://i.imgur.com/BmVjkXS.png" alt="Work 04" loading="lazy">
+                <div class="masonry-meta">
+                    <span class="masonry-index">04</span>
+                </div>
+            </a>
+
+            <!-- ITEM 5 -->
+            <a href="#" class="masonry-item">
+                <img src="https://i.imgur.com/wt9ODqV.png" alt="Work 05" loading="lazy">
+                <div class="masonry-meta">
+                    <span class="masonry-index">05</span>
+                </div>
+            </a>
+
+            <!-- ITEM 6 -->
+            <a href="#" class="masonry-item">
+                <img src="https://i.imgur.com/UTTuGEt.png" alt="Work 06" loading="lazy">
+                <div class="masonry-meta">
+                    <span class="masonry-index">06</span>
+                </div>
+            </a>
+
+            <!-- ITEM 7 -->
+            <a href="#" class="masonry-item">
+                <img src="https://i.imgur.com/pJEAUBN.png" alt="Work 07" loading="lazy">
+                <div class="masonry-meta">
+                    <span class="masonry-index">07</span>
+                </div>
+            </a>
+
+            <!-- ITEM 8 -->
+            <a href="#" class="masonry-item">
+                <img src="https://i.imgur.com/YT1uiKp.png" alt="Work 08" loading="lazy">
+                <div class="masonry-meta">
+                    <span class="masonry-index">08</span>
+                </div>
+            </a>
+
+            <!-- ITEM 9 -->
+            <a href="#" class="masonry-item">
+                <img src="https://i.imgur.com/VRmxz4q.png" alt="Work 09" loading="lazy">
+                <div class="masonry-meta">
+                    <span class="masonry-index">09</span>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <!-- 3. NUESTRA HISTORIA (AL FINAL) -->
+    <section id="our-story">
+        <p class="story-label">[our story]</p>
+        <h2 class="story-title">More than a studio.<br>A movement.</h2>
+        
+        <p class="story-text">
+            Nartfron was born from a necessity: to see our stories, our bodies, and our aesthetics represented with the elegance and complexity they deserve. We are not just illustrators; we are visual archivists of the Black experience.
+        </p>
+        
+        <p class="story-text">
+            In the world of fashion, our silhouettes have been imitated, and in the art world, our narratives have been co-opted. We exist to reclaim that space. The way we drape oversized luxury, the way we romanticize the block, the way we exist in the stillness of the night—it is all <span class="story-highlight">intentional</span>.
+        </p>
+
+        <p class="story-text">
+            We don't follow trends. We set the mood. Nartfron is a testament to the beauty of Black intimacy, the power of our heritage, and the unapologetic nature of our art. We are here to make sure the culture is not just seen, but <span class="story-highlight">felt</span>.
+        </p>
+    </section>
+
+    <!-- 4. CONTACTO -->
     <section id="contact">
-        <p class="section-label">[contact]</p>
-        <h2 style="font-size:2.8rem;font-weight:600;letter-spacing:-0.04em;">Inquiries.</h2>
+        <p class="contact-label">[contact]</p>
+        <h2 class="contact-title">Inquiries.</h2>
         <form action="https://formspree.io/f/xjgdnzba" method="POST">
             <div class="form-group">
                 <label>I am a...</label>
@@ -428,32 +488,23 @@
     </section>
 
     <footer>
-        <a href="https://www.instagram.com/nartfron/" target="_blank" class="social-link"><span class="inner"><span>Instagram</span><br><span class="clone">Instagram</span></span></a>
-        <a href="https://www.youtube.com/@Nartfron" target="_blank" class="social-link"><span class="inner"><span>YouTube</span><br><span class="clone">YouTube</span></span></a>
-        <a href="https://open.spotify.com/playlist/3G40MY61eZ8fhPr1iAw5dC" target="_blank" class="social-link"><span class="inner"><span>Spotify</span><br><span class="clone">Spotify</span></span></a>
-        <span style="color:#555;font-size:0.7rem;">© 2025 Nartfron.</span>
+        <span>© 2025 Nartfron.</span>
+        <span>All rights reserved.</span>
     </footer>
 
     <script>
+        // Cursor Personalizado
         const cursor = document.getElementById('cursor');
         document.addEventListener('mousemove', (e) => {
             cursor.style.left = e.clientX + 'px';
             cursor.style.top = e.clientY + 'px';
         });
-        document.querySelectorAll('a, button, .nav-link').forEach(el => {
+        document.querySelectorAll('a, button, .masonry-item, .nav-link, .project-btn, .story-btn').forEach(el => {
             el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
             el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
         });
 
-        const header = document.getElementById('header');
-        window.addEventListener('scroll', () => header.classList.toggle('scrolled', window.scrollY > 50));
-
-        const sections = document.querySelectorAll('section:not(#hero)');
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
-        }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
-        sections.forEach(section => observer.observe(section));
-
+        // Smooth Scroll
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
